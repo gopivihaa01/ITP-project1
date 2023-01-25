@@ -60,10 +60,6 @@ const Editprofile = () => {
           onUploadProgress,
         });
       }
-
-    
-
-
         // const url = `http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
         // const formData = new FormData ()
         // formData.append('file',file)
@@ -71,33 +67,6 @@ const Editprofile = () => {
         //     console.log(res)
         // })
         // )}
-    // const uploadavtarData = () => {
-    //     fetch(`http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`, {
-    //         method: "POST",
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //     })
-    //         .then((resp) => {
-    //             resp.json().then((result) => {
-    //                 console.log("result", result)
-    //                 setUploadAvtar(result);
-    //             })
-    //         })
-        // fetch("http://192.168.1.9/itp/api/values/UserProfilePicture?", {
-        //     method: "POST",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        // }).then((resp) => {
-        //     resp.json().then((result) => {
-        //         console.log("result", result)
-        //         setUploadAvtar(result);
-        //     })
-        // })
-    // }
     const getskillData = () =>{
         fetch(`http://192.168.1.9/itp/api/values/BindSkill`)
           .then((response) => response.json())
