@@ -1,0 +1,526 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.mapstyle-main{
+    height: 85% !important;
+}
+.main-header{
+    height: 6rem;
+    width: 100%;
+    /* display: flex; */
+    background-color:white;
+    box-shadow: 0 3px 20px rgba(0,0,0,0.2);
+}
+.logo-main{
+    height: 100px;
+    float: left;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 4vh 3vw;
+    color: rgb(60 60 171);
+}
+.filter-icon{
+    height: 35px;
+    width: 138px;
+    margin-top: 24px;
+    margin-left:auto;
+    margin-right: auto;
+    color: rgb(60 60 171);
+}
+.login-button{
+    float: right;
+    height: 36px;
+    width: 145px;
+    border-style: rgb(60 60 171);
+    background-color: rgb(60 60 171);
+    color: white;
+    margin: 20px 98px;
+    border-style: none;
+    /* margin-top: 26px; */
+    /* margin-right: 118px;
+    text-align: center; */
+}
+.main-menubutton{
+    float: right !important;
+    background-color: white;
+    border: none;
+    margin: 16px -311px;
+    /* margin-right: -223px;
+    margin-top: 22px; */
+}
+.editp-icon-menubtn{
+    font-size: 15px;
+    margin-top: -9px;
+}
+.chat-icon-menubtnchat{
+    font-size: 15px;
+    margin-top: -7px;
+}
+.setting-icon-menubtn{
+    font-size:17px;
+}
+.main-editprofile{
+    text-align: center;
+}
+.menubar-avtar{
+    height: 42px !important;
+    width: 38px !important;
+}
+.avtar-editprofile-page{
+    height: 90px !important;
+    width: 90px !important;
+    margin: -29px auto 0px auto;
+}
+.edit-avtar-modal{
+    position: relative;
+    height:100px;
+    width:100px;
+    border-radius: 50%;
+    margin-top: -47px;
+    margin-left: -13px;
+}
+.edit-camera-circle{
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    left: 51%;
+    top: 39%;
+    background: #ffffff;
+    margin: 0 auto 10px auto;
+    border-radius: 50%;;
+}
+.edit-camera{
+    color: cadetblue;
+}
+.mainform.edit{
+    margin-top: 20px;
+}
+.textfieldform-edit{
+    margin-top: 10px !important;
+}
+.mainskill-input-edit{
+    margin: 7px -1px !important; 
+}
+.mainskill-inputheight-edit{
+    height:46px;
+}
+.labelcity-input-edit{
+    margin-left: -311px;
+}
+.timepicker-edit {
+    width:320px;
+}
+.timepicker-edit label{
+    top: 0px ;
+    color: black;
+    font-size: 20px;
+    left: 70px;
+}
+.timepicker-edit input{
+    border: 1px solid gray;
+    height: 14px;
+    width: 182px;
+    border-radius: 2px;
+}
+.form-select-edit{
+    width: 14% !important;
+    margin-left: 43%;
+    height: 29px;
+    border: 1px solid gray !important;
+    border-radius: 4px !important;
+    padding:0px !important;
+}
+
+.MuiInput-underline:after{
+    border-bottom: none !important;
+}
+.submit-btn-edit{
+    height: 40px;
+    width: 100%;
+    margin-top: 10px;
+    border: none;
+    color: white;
+    background:#023B54;
+    border-radius: 5px; 
+}
+.signup-button{
+    float: right;
+    height: 35px;
+    width: 80px;
+    margin-top: 27px;
+    margin-right: -180px;
+    border-style: none;
+    color: white;
+    background-color:rgb(60 60 171);
+}
+.modal-dialog {
+    text-align: center;
+}
+.hfive-header-modal{
+    margin:20px; 
+    color:#023B54;
+}
+.img-header-modal{
+    height:14px;
+}
+.nav-tabs {
+    --bs-nav-tabs-border-width: none !important;
+    --bs-nav-tabs-border-color: none !important;
+    --bs-nav-tabs-border-radius: none !important;
+    --bs-nav-tabs-link-hover-border-color:none !important;
+    --bs-nav-tabs-link-active-color:none !important;
+    --bs-nav-tabs-link-active-bg: none !important;
+    --bs-nav-tabs-link-active-border-color: #dee2e6 #dee2e6 #fff;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+    color: #023B54 !important;
+    border-bottom: 2px solid #023B54 !important;
+    border-color: none !important;
+}
+.nav-link{
+    color: black !important;
+    font-weight: 600 !important;
+}
+.login-modal{
+  height:250px;
+  width: 450px;
+  box-shadow: 5px 5px 5px 5px #ccc ;
+  background: white;
+  border-radius: 10px;
+  z-index: 100;
+}
+.login-header{
+    color:#023B54;
+    font-size: 20px;
+    margin-top: 20px;
+    font-weight: 600;
+}
+.phone-input{
+    height: 0px;
+    width: 421px;
+}
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    height: 0.4375em !important;
+}
+.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
+    margin-top: -6px;
+}
+.modal {
+   --bs-modal-footer-border-width: none !important;
+   top: 135px !important;
+}
+.modal-footer{
+    display: block !important;
+}
+.modal-login-button{
+    height: 40px;
+    width: 421px;
+    background-color:#023B54 !important;
+    color:white !important;
+    border-style: none !important;
+}
+.signup-login-button{
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    color: #023B54;
+    margin-top: 20px;
+    text-decoration: underline;
+}
+.otp-header{
+    margin-top: 40px;
+    text-align: center;
+    color: rgb(60 60 171);
+}
+.otp-enterp{
+    text-align: center;
+    color: black;
+    font-weight: 600;
+}
+.otp-data{
+    margin-left: 25px;
+    margin-top: 30px;
+    justify-content: center;
+}
+.otp-second-content{
+    margin-top: 20px;
+    justify-content: center !important;
+}
+.otp-verify-btn{
+    height: 40px;
+    width: 136px;
+    border-radius: 12px;
+    float: right;
+    border: none;
+    color: white;
+    margin-right: 34%;
+    margin-top: 10px;
+    background-color: rgb(60 60 171) ;
+}
+.otp-second-content button{
+    border:none;
+    background: white;
+    text-decoration: underline;
+    color: rgb(60 60 171) ;
+}
+.otp-second-content span{
+    margin-right: 10px;
+}
+.otheruser-avtar {
+    height: 120px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -53px;
+    border-radius: 50%
+}
+.other-userprofile{
+    width: 80%;
+    height: 120px;
+    background: #023B54;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    font-size: 20px;
+    color: white;
+}
+.hfive-bio-otheruser{
+    text-align: center;
+    margin: 10px;
+    color: #023B54;
+}
+.pbio-otheruser{
+    font-size: 14px;
+    text-align: center;
+    margin: 10px;
+    color: gray;
+}
+.offset-sm-1 {
+    margin-left: 17.333333% !important;
+}
+.mainskill-header-otheruser{
+    font-weight:600;
+    color: #023B54;
+    font-size:16px;
+}
+.mainskill-fst-otheruser{
+    background: #023B54 !important;
+    height: 28px !important;
+    width: 80px;
+    border-radius: 6px !important;
+    color: white !important;
+}
+.mainskill-sec-otheruser{
+    margin-left: 10px;
+    background: #023B54 !important;
+    height: 28px !important;
+    width: 80px;
+    border-radius: 6px !important;
+    color: white !important;
+}
+.otherskill-fst-otheruser{
+    background:gray !important;
+    height: 28px !important;
+    width: 80px;
+    border-radius: 6px !important;
+    color: white !important;
+}
+.otherskill-sec-otheruser{
+    margin-left: 10px;
+    background: gray !important;
+    height: 28px !important;
+    width: 80px;
+    border-radius: 6px !important;
+    color: white !important;
+}
+.content-otheruser{
+    font-weight:400;
+    color: #023B54;
+    font-size:15px;
+}
+.maindiv-otheruser{
+    display:flex;
+}
+.hthree-maindiv-otheruser{
+    margin: 40px 70px;
+}
+.right-arrow-otheruser{
+    display: block;
+    margin-left: auto;
+    font-size: 30px;
+    margin-right: -193px;
+    margin-top: 40px;
+}
+.detail-otheruser{
+    margin: 30px 30px;
+}
+.maincard-chat{
+    width: 100% ;
+    height:450px;
+}
+.mainrow-chat{
+    width: 100%;
+}
+.fstcol-chat{
+    width: 30% !important;
+}
+.fstcol-header-chat{
+    display: flex; 
+    background:#023B54;
+}
+.back-icon-chat{
+    margin:32px 3px;
+    font-size:25px;
+    color:white;
+}
+.header-mainavtar-chat{
+    margin-top: 10px;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+}
+.header-avtar-chat{
+    margin: 10px;
+    width: 50px !important;
+    height: 50px !important;
+}
+.header-search-chat{
+    border-radius: 50px !important;
+    height: 39px !important;
+    width: 260px !important;
+    margin-left: 15px;
+    margin-top: 23px;
+}
+.col {
+    flex: none !important;
+}
+.main-chat-header{
+    color: #023B54;
+    margin: 20px;
+    font-size: 23px;
+}
+.fstmsg-chat{
+    background:none;
+    border:none;
+    display:flex;
+}
+.title-contentmsg-chat{
+    margin: 20px;
+}
+.content-msg-chat{
+    margin-top: -15px;
+    color: gray;
+    margin-left: -52px;
+}
+.fstmsg-chat:hover{
+    background:#efefef; 
+    width:403px;
+}
+.contenttwo-msg-chat{
+    margin-top: -15px;
+    color: gray;
+    margin-left: 3px;
+}
+.seccol-chat{
+    width: 70% !important;
+    background-color: white;
+}
+.seccol-chatcontent-chat{
+    height: 89px;
+    margin: 1px -11px;
+    display: flex;
+    background-color:#023B54;
+}
+.main-menubar-chat{
+    position: absolute;
+    right: 44px;
+    top: 28px;
+}
+.avtarfst-chat{
+    height: 50px!important;
+    width:50px !important;
+    margin: 9px;
+    border-radius: 50%;
+}
+.headerchat-seccol-chat{
+    margin:30px 20px;
+    color: white;
+}
+.righticon-menubar-chat{
+    margin-right: 23px;
+    font-size: 21px;
+    color: white;
+}
+.menubtn-chat{
+    border: none;
+    background: white;
+}
+.otheruser-badges-leftchat{
+    margin-top: 20px;
+    padding: 10px !important;
+    height: 34px;
+    width: 88px;
+    color:#023B54 !important;
+}
+.user-badges-rightchat{
+    float: right;
+    background-color:#023B54 !important;
+    color: white !important;
+    padding: 10px !important;
+    height: 34px;
+    width: 88px;
+}
+.user-badgessec-rightchat{
+    float: right;
+    background-color: #023B54 !important;
+    color: white !important;
+    padding: 10px !important;
+    height: 34px;
+    width: 157px;
+}
+.main-footer-chat{
+    margin: 0px -11px;
+    margin-top: 205px;
+    height: 50px;
+    display: flex;
+    background-color: #e3e3e3;
+}
+.imageicon-footer-chat{
+    font-size: 20px;
+    margin: 15px 5px;
+}
+.typeingbar-chat{
+    height: 50px;
+    position: relative;
+    top: 0px;
+    background-color: #e3e3e3 !important;
+    border: none !important;
+    border-radius: 0px !important;
+    width: 100% !important;
+}
+.sendicon-footer-chat{
+    margin:15px 20px;
+    font-size: 20px;
+}
+/* .member-modal{
+    font-size: 13px;
+    margin-top: 20px;
+    margin-left: -37px;
+}
+.signup-login-modal{
+    font-size: 12px;
+    margin-top: -18px;
+    margin-left: 141px;
+} */
+@media only screen and (min-width:300px) and ( max-width:1024px){
+.mapstyle-main{
+    height: 89% !important;
+}
+}
+
+.colSize {
+    width: 100%;
+}
+
