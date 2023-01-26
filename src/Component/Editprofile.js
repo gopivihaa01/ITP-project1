@@ -32,12 +32,54 @@ const Editprofile = () => {
     const [file, setFile] = useState(null);
     const [value, setValue] = React.useState([]);
 
+
     const UserToken = window.localStorage.getItem('UserToken');
     const userId = window.localStorage.getItem('UserID');
 
     
     const uploadavtarData = () => {
         // const formData = new FormData()
+
+    const UserToken = localStorage.getItem('UserToken');
+    const userId = localStorage.getItem('UserID');
+    console.log(UserToken);
+
+    // const uploadavtarData = () => {
+    //     const formData = new FormData()
+    //     formData.append('file', file)
+    //     fetch(`http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`, {
+    //         method: "POST",
+
+    //     }).then((resp) => {
+    //         console.log(resp)
+    //     })
+    // }
+
+  const uploadavtarData = (file, onUploadProgress) => {
+        let formData = new FormData();
+    
+        formData.append("file", 'pin.png');
+    
+        return axios.post("http://192.168.1.9/itp/api/values/UserProfilePicture?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwianRpIjoiODlkNmQ0ZmYtYWViZi00OTJmLWEwNWYtZjdjYzg4ZmU1NjVjIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiZXhwIjoxNjc0NjQyNDE2LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDM0OSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.xAvrpxdK4VEDBW1sgCNpwOQ-lOphqTSigyl3IpF-kKk&id=1", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress,
+        });
+      }
+        // const url = `http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
+        // const formData = new FormData ()
+        // formData.append('file',file)
+        // axios.post(url,formData).then((res)=>{
+        //     console.log(res)
+        // })
+        // )}
+    const getskillData = () =>{
+        fetch(`http://192.168.1.9/itp/api/values/BindSkill`)
+          .then((response) => response.json())
+          .then(data => {
+            setMainSkill(data);
+          });
     }
     const showData = () =>{
     fetch (`http://192.168.1.9/itp/api/values/UserDetails?User_id=${userId}&token=${UserToken}`, {

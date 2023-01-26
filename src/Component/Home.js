@@ -47,7 +47,6 @@ const ModalBasic = () => {
             setActive(tab)
         }
     }
-    const onLoginSubmitHandler = (e) => {
         e.preventDefault();
         // const user = { loginphone, loginpassword };
         // const result = fetch("http://192.168.1.9/itp/api/values/Login", user);
@@ -114,11 +113,6 @@ const ModalBasic = () => {
 
             })
         })
-        // const obj = {
-        //     Phonenumber:loginphone,
-        //     Password: loginpassword,
-        // };
-        // localStorage.setItem('items', JSON.stringify({ ...obj }));
     }
     function saveData() {
         fetch("http://192.168.1.9/itp/api/values/Register", {
@@ -190,7 +184,7 @@ const ModalBasic = () => {
                 <nav className='main-header'>
                     <img className='logo-main' src={itp} alt="logoimage" />
                     {/* <a href='/'><BsFilter className='filter-icon' /></a> */}
-                    <button className='login-button' outline onClick={() => setBasicModal(!basicModal)}>Login / Signup</button>
+                    <button className='login-button' onClick={() => setBasicModal(!basicModal)}>Login / Signup</button>
                     <Menu>
                         <MenuButton className="main-menubutton">
                             <Avatar className='menubar-avtar' src='image/puser.jpg' />
@@ -236,7 +230,7 @@ const ModalBasic = () => {
                             <TabContent className='py-50' activeTab={active}>
                                 <TabPane tabId='1'>
                                     <p className='login-header'>Login</p>
-                                    <form onSubmit={onLoginSubmitHandler}>
+                                    <form onSubmit={onSubmitHandler}>
                                         <TextField className='phone-input' id="outlined-basic" label="Phone" type="number" value={loginphone} onChange={(e) => setLoginPhone(e.target.value)} /><br /><br /><br />
                                         <ToastContainer />
                                         <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={loginpassword} onChange={(e) => setLoginPassword(e.target.value)} /><br /><br /><br />

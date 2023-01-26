@@ -37,17 +37,12 @@
     color: white;
     margin: 20px 98px;
     border-style: none;
-    /* margin-top: 26px; */
-    /* margin-right: 118px;
-    text-align: center; */
 }
 .main-menubutton{
     float: right !important;
     background-color: white;
     border: none;
     margin: 16px -311px;
-    /* margin-right: -223px;
-    margin-top: 22px; */
 }
 .editp-icon-menubtn{
     font-size: 15px;
