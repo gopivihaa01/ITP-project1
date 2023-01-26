@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BsFillCameraFill } from 'react-icons/bs';
 import TextField from '@mui/material/TextField';
 import { Col, Row } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useLocation} from 'react-router-dom';
 import { Autocomplete, Avatar, Box, Chip, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 // import { AutoComplete } from '@mui/material/Autocomplete';
 // import { top100Films } from 'src/@fake-db/autocomplete'
@@ -31,126 +31,91 @@ const Editprofile = () => {
     const [currency, setCurrency] = useState([]);
     const [file, setFile] = useState(null);
     const [value, setValue] = React.useState([]);
-    console.log(file);
 
-    const UserToken = localStorage.getItem('UserToken');
-    const userId = localStorage.getItem('UserID');
-    console.log(UserToken);
-
-    // const uploadavtarData = () => {
-    //     const formData = new FormData()
-    //     formData.append('file', file)
-    //     fetch(`http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`, {
-    //         method: "POST",
-
-    //     }).then((resp) => {
-    //         console.log(resp)
-    //     })
-    // }
-
-  const uploadavtarData = (file, onUploadProgress) => {
-        let formData = new FormData();
-    
-        formData.append("file", 'pin.png');
-    
-        return axios.post("http://192.168.1.9/itp/api/values/UserProfilePicture?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwianRpIjoiODlkNmQ0ZmYtYWViZi00OTJmLWEwNWYtZjdjYzg4ZmU1NjVjIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiZXhwIjoxNjc0NjQyNDE2LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDM0OSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.xAvrpxdK4VEDBW1sgCNpwOQ-lOphqTSigyl3IpF-kKk&id=1", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          onUploadProgress,
-        });
-      }
+    const UserToken = window.localStorage.getItem('UserToken');
+    const userId = window.localStorage.getItem('UserID');
 
     
-
-
-        // const url = `http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
-        // const formData = new FormData ()
-        // formData.append('file',file)
-        // axios.post(url,formData).then((res)=>{
-        //     console.log(res)
-        // })
-        // )}
-    // const uploadavtarData = () => {
-    //     fetch(`http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`, {
-    //         method: "POST",
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //     })
-    //         .then((resp) => {
-    //             resp.json().then((result) => {
-    //                 console.log("result", result)
-    //                 setUploadAvtar(result);
-    //             })
-    //         })
-        // fetch("http://192.168.1.9/itp/api/values/UserProfilePicture?", {
-        //     method: "POST",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        // }).then((resp) => {
-        //     resp.json().then((result) => {
-        //         console.log("result", result)
-        //         setUploadAvtar(result);
-        //     })
-        // })
-    // }
-    const getskillData = () =>{
-        fetch(`http://192.168.1.9/itp/api/values/BindSkill`)
-          .then((response) => response.json())
-          .then(data => {
-            setMainSkill(data);
-          });
+    const uploadavtarData = () => {
+        // const formData = new FormData()
     }
-    const getcountries = () =>{
+    const showData = () =>{
+    fetch (`http://192.168.1.9/itp/api/values/UserDetails?User_id=${userId}&token=${UserToken}`, {
+        method: "GET",
+
+    }).then((resp) => {
+        resp.json().then((result)=>{
+            console.log(result);
+            setFile(result.user.ProfilePicture)
+            setFullName(result.user.FullName)
+            setPhone(result.user.PhoneNumber)
+            setAvailabelHour(result.rate.Hour)
+            setMainSkill(result.skill)
+            setCountries(result.location.Country)
+            // setState(result.location.State)
+            // setCity(result.location.City)
+            // setCurrency(result.currency.Currency)
+
+        })
+    })
+}
+        // formData.append('file', file)
+
+    useEffect(() => {
+        uploadavtarData()
+        showData();
+    }, []);
+  
+    const getskillData = () => {
+        fetch(`http://192.168.1.9/itp/api/values/BindSkill`)
+            .then((response) => response.json())
+            .then(data => {
+                setMainSkill(data);
+            });
+    }
+    const getcountries = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindCountry`)
-          .then((response) => response.json())
-          .then(data => {
-            setCountries(data);
-          });
-          console.log(countries.map((c) => console.log(c.countries)));
+            .then((response) => response.json())
+            .then(data => {
+                setCountries(data);
+            });
+        console.log(countries.map((c) => console.log(c.countries)));
     }
     const handlecountries = (event) => {
         const getcountriesid = event.target.value;
         setCountriesid(getcountriesid);
     }
-    const getstateData  = () =>{
+    const getstateData = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindState?Country_id=101`)
-          .then((response) => response.json())
-          .then(data => {
-            setState(data);
-          });
-          console.log(state.map((s) => console.log(s.state)));
+            .then((response) => response.json())
+            .then(data => {
+                setState(data);
+            });
+        console.log(state.map((s) => console.log(s.state)));
     }
     const handlestate = (event) => {
         const getstateid = event.target.value;
         setStateid(getstateid);
     }
-    const getcityData  = () =>{
+    const getcityData = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindCity?State_id=12`)
-          .then((response) => response.json())
-          .then(data => {
-            setCity(data);
-        });
-        // console.log(city.map((s) => console.log(s.city)));
+            .then((response) => response.json())
+            .then(data => {
+                setCity(data);
+            });
     }
-    const getcurrency  = () =>{
+    const getcurrency = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindCurrency`)
-          .then((response) => response.json())
-          .then(data => {
-            setCurrency(data);
-        });
-        // console.log(city.map((s) => console.log(s.city)));
+            .then((response) => response.json())
+            .then(data => {
+                setCurrency(data);
+            });
     }
     useEffect(() => {
         getcountries()
         getstateData()
         getcityData()
         getskillData()
-        // uploadavtarData()
         getcurrency()
     }, []);
     const handleChange1 = (event) => {
@@ -179,17 +144,7 @@ const Editprofile = () => {
         }
     }
 
-    // const skill = [
-    //     {
-    //         "id":"1",
-    //         "title":"React Js"
-    //     },
-    //     {
-    //         "id":"1",
-    //         "title":"C#"
-    //     }
-        
-    // ]
+ 
     const onSubmitHandler = (e) => {
         e.preventDefault();
         if (fullname.length === 0) {
@@ -232,18 +187,18 @@ const Editprofile = () => {
             console.log(event.target.files[0].name);
         }
     };
-    const [age,setAge] = useState ('');
-    
+    const [age, setAge] = useState('');
+
     const handleChangeage = (event) => {
         setAge(event.target.value);
-      };
-    
+    };
+
     return (
         <div className='main-editprofile'>
             <div className='other-userprofile'>Edit Profile</div>
             <Avatar id="avatar" className='avtar-editprofile-page' src={file} />
             <div className='edit-camera-circle'>
-                <input type='file' id='file' ref={inputFile} style={{ display: 'none' }} onChange={handleChangeavtar} accept="image/*"/>
+                <input type='file' id='file' ref={inputFile} style={{ display: 'none' }} onChange={handleChangeavtar} accept="image/*" />
                 <BsFillCameraFill onClick={onButtonClick} className='edit-camera' />
             </div>
             <Row className="justify-content-md-center ">
@@ -259,7 +214,7 @@ const Editprofile = () => {
                             <Col sm={6} >
                                 <TextField id="outlined-basic"
                                     className='w-100'
-                                    label="Time :"
+                                    label="StartTime :"
                                     type="time"
                                     value={starttime} onChange={(e) => setStartTime(e.target.value)}
                                     InputLabelProps={{
@@ -273,7 +228,7 @@ const Editprofile = () => {
                             <Col sm={6}>
                                 <TextField id="outlined-basic"
                                     className='w-100'
-                                    label="Time :"
+                                    label="EndTime :"
                                     type="time"
                                     value={endtime} onChange={(e) => setEndTime(e.target.value)}
                                     InputLabelProps={{
@@ -290,7 +245,7 @@ const Editprofile = () => {
                                 multiple
                                 fullWidth
                                 value={value}
-                                    onChange={(event, newValue) => {
+                                onChange={(event, newValue) => {
                                     setValue(newValue);
                                 }}
                                 options={mainskill}
@@ -298,39 +253,15 @@ const Editprofile = () => {
                                 id='autocomplete-multiple-outlined'
                                 getOptionLabel={option => option.Skill}
                                 size="small"
-                                renderInput={params => <TextField {...params} label='Main skill' 
-                                required={value.length === 0}
-                                /> }        
+                                renderInput={params => <TextField {...params} label='Main skill'
+                                    required={value.length === 0}
+                                />}
                             />
                         </FormControl>
-                        {/* <FormControl fullWidth className='mainskill-input-edit'>
-                            <InputLabel id='demo-multiple-chip-label'>Other Skill</InputLabel>
-                            <Select
-                                multiple
-                                label='Main-skill'
-                                value={otherskillName}
-                                MenuProps={MenuProps}
-                                id='demo-multiple-chip' className='mainskill-inputheight-edit'
-                                onChange={handleChangeotherskill}
-                                labelId='demo-multiple-chip-label'
-                                renderValue={selected => (
-                                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                                        {(selected).map(value => (
-                                            <Chip key={value} label={value} sx={{ m: 0.75 }} />
-                                        ))}
-                                    </Box>
-                                )}
-                            >
-                                {otherskill.map(otherskill => (
-                                    <MenuItem key={otherskill} value={otherskill}>
-                                        {otherskill}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl> */}
+                   
                         <FormControl fullWidth className='mainskill-input-edit' size='small'>
                             <InputLabel id='demo-simple-select-outlined-label'>Country</InputLabel>
-                            <Select 
+                            <Select
                                 // onChange={(e) => handlecountries(e)}
                                 size="small"
                                 label='country'
@@ -338,14 +269,14 @@ const Editprofile = () => {
                                 id='demo-simple-select-outlined' className='mainskill-inputheight-edit'
                                 labelId='demo-simple-select-outlined-label'
                             >
-                                {countries.map((cou) => (
+                                {countries && countries.map((cou) => (
                                     <MenuItem value={cou.Country_id}>{cou.Country}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         <FormControl fullWidth className='mainskill-input-edit'>
                             <InputLabel id='demo-simple-select-outlined-label'>State</InputLabel>
-                            <Select 
+                            <Select
                                 // onChange={(e) => handlestate(e)}
                                 label='State'
                                 defaultValue=''

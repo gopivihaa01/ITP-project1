@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 // import { BiErrorCircle } from 'react-icons/bi';
 // import { BsFilter } from 'react-icons/bs';
-import { Button, Modal, ModalBody, ModalFooter, TabContent, TabPane, Nav, NavItem, NavLink} from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import OTPInput, { ResendOTP } from "otp-input-react";
 import { Menu, MenuList, MenuButton, MenuItem, } from "@reach/menu-button";
 import "@reach/menu-button/styles.css";
@@ -30,56 +30,55 @@ const ModalBasic = () => {
     const [otpNumber, setOtpNumber] = useState("");
     const [data, setData] = React.useState([]);
     const [showData, setShowData] = React.useState(false);
-    const [lat,setLat] = useState('');
-    const [long,setLon] = useState('');
+    const [lat, setLat] = useState('');
+    const [long, setLon] = useState('');
     const [user, setUser] = useState();
     const navigate = useNavigate();
 
-    const navigateToEdit = () => {
-        navigate('/edit');
+    const navigateToEdit = () => { 
+        const ID = window.localStorage.getItem('UserID')
+        navigate(`/edit?id=${ID}`);
     };
     const navigateToChat = () => {
         navigate('/chatpage');
     };
-    const toggle = tab => {
+    const toggle = (tab) => {
         if (active !== tab) {
             setActive(tab)
         }
     }
-    const onLoginSubmitHandler = (e)  => {
+    const onLoginSubmitHandler = (e) => {
         e.preventDefault();
-        const user = { loginphone, loginpassword };
-        const result = fetch("http://192.168.1.9/itp/api/values/Login",user);
-        setUser(result.data)
-        // localStorage.setItem('user', result.data)
-        console.log(result.data)
-    // if(loginphone.trim().length !== 10) {
-    //     toast.error("Enter the valid phone number", {
-    //         position: "bottom-right"
-    //     });
-    // }else if (loginpassword.length !== 4) {
-    //     toast.error("Enter the valid password", {
-    //         position: "bottom-right"
-    //     });
-    // }
-    
+        // const user = { loginphone, loginpassword };
+        // const result = fetch("http://192.168.1.9/itp/api/values/Login", user);
+        // setUser(result.data)
+        // // localStorage.setItem('user', result.data)
+        // console.log(result.data)
+        // if(loginphone.trim().length !== 10) {
+        //     toast.error("Enter the valid phone number", {
+        //         position: "bottom-right"
+        //     });
+        // }else if (loginpassword.length !== 4) {
+        //     toast.error("Enter the valid password", {
+        //         position: "bottom-right"
+        //     });
+        // }
     }
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        if(name.length===0){
-            toast.error("Enter the valid name", {
-                position: "bottom-right"
-            });
-        } else if(phone.trim().length !== 10){
-            toast.error("Enter the valid phone number", {
-                position: "bottom-right"
-            });
-        } else if (password.length !== 4){
-            toast.error("Enter the valid password", {
-                position: "bottom-right"
-            });
-        }
-        
+        // if (name.length === 0) {
+        //     toast.error("Enter the valid name", {
+        //         position: "bottom-right"
+        //     });
+        // } else if (phone.trim().length !== 10) {
+        //     toast.error("Enter the valid phone number", {
+        //         position: "bottom-right"
+        //     });
+        // } else if (password.length !== 4) {
+        //     toast.error("Enter the valid password", {
+        //         position: "bottom-right"
+        //     });
+        // }
     }
     function loginData() {
         fetch("http://192.168.1.9/itp/api/values/Login", {
@@ -89,30 +88,30 @@ const ModalBasic = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "Phonenumber":loginphone,
+                "Phonenumber": loginphone,
                 "Password": loginpassword,
             })
         }).then((resp) => {
             resp.json().then((result) => {
                 // console.log("result", result)
                 // setBasicModal(false);
-                if(result.Message ==="Invalid User data."){
-                    toast.error(result.Message,{
-                    position: "bottom-right"
-                });
+                if (result.Message === "Invalid User data.") {
+                    toast.error(result.Message, {
+                        position: "bottom-right"
+                    });
                 }
-                else if(result.Statuscode === 200){
+                else if (result.Statuscode === 200) {
                     console.log((result.UserData));
                     localStorage.setItem('UserToken', result.token)
                     localStorage.setItem('UserID', result.UserData.User_Id)
-                    toast.success("Login Successfully",{
+                    toast.success("Login Successfully", {
                         position: "bottom-right"
                     });
                 }
                 // else if (result.Statuscode === 200){
                 //     localStorage.setItem('user', result.UserData)
                 // }
-                
+
             })
         })
         // const obj = {
@@ -126,26 +125,33 @@ const ModalBasic = () => {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
-              'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 FullName: name,
                 PhoneNumber: phone,
                 Password: password,
-                Lat:lat,
-                Long:long
+                Lat: lat,
+                Long: long
             })
         }).then((resp) => {
             resp.json().then((resp) => {
                 console.log("resp", resp)
-                if(resp.Message === "User already exist"){
-                    toast.error("User already exist", {
-                    position: "bottom-right",
-                });
-                }else if(resp.message === "success"){
+                // if(resp.Message === "User already exist"){
+                //     toast.error("User already exist", {
+                //     position: "bottom-right",
+                // });
+
+                // }else if(resp.message === "success"){
+                //     setOtp1(!otp1)
+                //  }
+                //bhavy
+                if (resp.message === "success") {
                     setOtp1(!otp1)
-                 }
+                } else {
+                    toast.error(resp.message)
+                }
                 // setOtp(!otp)
                 // if(result !== "User already exist"){
                 //     toast.success(`OPT: ${result.otp}`)
@@ -160,19 +166,19 @@ const ModalBasic = () => {
         setShowData(true)
         const url = "http://192.168.1.16/itp/api/values/Otp";
         fetch(url)
-          .then((response) => response.json())
-          .then((json) => {
+            .then((response) => response.json())
+            .then((json) => {
 
-            setData(json["results"])
-            console.log(json);
-            if(json === "Successfully register"){
-                setBasicModal(false);
-              }
-          })
-        .catch((error) => console.log(error));
+                setData(json["results"])
+                console.log(json);
+                if (json === "Successfully register") {
+                    setBasicModal(false);
+                }
+            })
+            .catch((error) => console.log(error));
     }
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position)=>{
+        navigator.geolocation.getCurrentPosition((position) => {
             setLat(position.coords.latitude)
             setLon(position.coords.longitude)
             console.log(position.coords.latitude)
@@ -182,7 +188,7 @@ const ModalBasic = () => {
         <>
             <div>
                 <nav className='main-header'>
-                    <img className='logo-main' src={itp} alt="logoimage"/>
+                    <img className='logo-main' src={itp} alt="logoimage" />
                     {/* <a href='/'><BsFilter className='filter-icon' /></a> */}
                     <button className='login-button' outline onClick={() => setBasicModal(!basicModal)}>Login / Signup</button>
                     <Menu>
@@ -225,9 +231,8 @@ const ModalBasic = () => {
                                         Signup
                                     </NavLink>
                                 </NavItem>
-
-
                             </Nav>
+
                             <TabContent className='py-50' activeTab={active}>
                                 <TabPane tabId='1'>
                                     <p className='login-header'>Login</p>
@@ -245,7 +250,7 @@ const ModalBasic = () => {
                                     {otp1 !== true ? <form onSubmit={onSubmitHandler}>
                                         <TextField className='phone-input' id="outlined-basic" label="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} /><br /><br /><br />
                                         <ToastContainer />
-                                        <TextField className='phone-input' id="outlined-basic" label="Phone" type="number" value={phone} onChange={(e) => setPhone(e.target.value)} /><br /><br /><br />
+                                        <TextField className='phone-input' id="outlined-basic" label="Phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} /><br /><br /><br />
                                         <ToastContainer />
                                         <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /><br /><br />
                                         <ToastContainer />
