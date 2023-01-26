@@ -32,8 +32,19 @@ const ModalBasic = () => {
     const [showData, setShowData] = React.useState(false);
     const [lat, setLat] = useState('');
     const [long, setLon] = useState('');
-    const [user, setUser] = useState();
     const navigate = useNavigate();
+    const [menuItemActive,setMenuItemActive] = useState(false)
+    const [loginButtonhide,setLoginButtonHide] = useState(true)
+    const isLogin = window.localStorage.getItem('UserToken')
+    
+useEffect(()=>{
+
+    if(isLogin !== null){
+        setMenuItemActive(true);
+    }else{
+        setMenuItemActive(false); 
+    }
+},[isLogin])  
 
     const navigateToEdit = () => { 
         const ID = window.localStorage.getItem('UserID')
@@ -47,7 +58,7 @@ const ModalBasic = () => {
             setActive(tab)
         }
     }
-        e.preventDefault();
+        // e.preventDefault();
         // const user = { loginphone, loginpassword };
         // const result = fetch("http://192.168.1.9/itp/api/values/Login", user);
         // setUser(result.data)
@@ -62,7 +73,7 @@ const ModalBasic = () => {
         //         position: "bottom-right"
         //     });
         // }
-    }
+
     const onSubmitHandler = (e) => {
         e.preventDefault();
         // if (name.length === 0) {
@@ -106,14 +117,13 @@ const ModalBasic = () => {
                     toast.success("Login Successfully", {
                         position: "bottom-right"
                     });
-                }
-                // else if (result.Statuscode === 200){
-                //     localStorage.setItem('user', result.UserData)
-                // }
 
+                }
+                
             })
         })
     }
+  
     function saveData() {
         fetch("http://192.168.1.9/itp/api/values/Register", {
             method: "POST",
@@ -178,24 +188,27 @@ const ModalBasic = () => {
             console.log(position.coords.latitude)
         })
     })
+
     return (
         <>
             <div>
                 <nav className='main-header'>
                     <img className='logo-main' src={itp} alt="logoimage" />
                     {/* <a href='/'><BsFilter className='filter-icon' /></a> */}
-                    <button className='login-button' onClick={() => setBasicModal(!basicModal)}>Login / Signup</button>
+                        <button className='login-button' onClick={() => setBasicModal(!basicModal)}>Login / Signup</button>
+
+                    {menuItemActive&&
                     <Menu>
                         <MenuButton className="main-menubutton">
                             <Avatar className='menubar-avtar' src='image/puser.jpg' />
                         </MenuButton>
-                        <MenuList>
+                         <MenuList>
                             <MenuItem onClick={navigateToEdit}><FaUserEdit className='editp-icon-menubtn' /> Edit</MenuItem>
                             <MenuItem onClick={navigateToChat}><BsFillChatDotsFill className='chat-icon-menubtn' /> Chat</MenuItem>
                             <MenuItem onSelect={() => alert("Mark as Draft")}><TbSettings className='setting-icon-menubtn' /> Setting</MenuItem>
                             <MenuItem onSelect={() => alert("Mark as Draft")}><BiLogOut className='setting-icon-menubtn' /> Log out</MenuItem>
                         </MenuList>
-                    </Menu>
+                    </Menu>}
                 </nav>
 
             </div>
@@ -280,7 +293,7 @@ const ModalBasic = () => {
             </div>
         </>
     );
-}
 
+}
 export default ModalBasic
 
