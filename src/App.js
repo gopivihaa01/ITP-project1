@@ -14,7 +14,7 @@ function App() {
        <Routes>
          <Route exact path="/" element={<Mpapplication />} />
          <Route exact path="/edit" element={<Editprofile />} />
-         <Route exact path="/otheruserprofile" element={<Otheruserprofile />} />
+         <Route exact path="/otheruserprofile/:id" element={<Otheruserprofile />} />
          <Route exact path="/chatpage" element={<Chat />} />
        </Routes>
     </div>

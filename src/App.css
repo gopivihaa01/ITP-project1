@@ -303,7 +303,8 @@
 .mainskill-fst-otheruser{
     background: #023B54 !important;
     height: 28px !important;
-    width: 80px;
+    width: auto;
+    margin-right: 10px;
     border-radius: 6px !important;
     color: white !important;
 }
@@ -509,13 +510,39 @@
     margin-top: -18px;
     margin-left: 141px;
 } */
-@media only screen and (min-width:300px) and ( max-width:1024px){
+@media only screen and (min-width:300px) and ( max-width:800px){
 .mapstyle-main{
     height: 89% !important;
 }
+.login-button {
+    margin: -68px 60px;
 }
-
-.colSize {
+.main-menubutton {
+    margin: -72px 13px;
+}
+.phone-input,.modal-login-button{
+    width: 313px;
+}
+.otp-data {
+    margin-left: 26px;
+    margin-top: 32px;
+}
+.otp-verify-btn {
+    margin-right: 28%;
+    margin-top: 20px;
+}
+.mainrow-chat {
+    --bs-gutter-x: none !important;
+}
+.fstcol-chat {
+    width: 100% !important;
+}
+.seccol-chat {
+    width: 0px !important;
+    display: none !important;
+}
+}
+/* .colSize {
     width: 100%;
-}
+} */
 
