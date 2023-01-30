@@ -34,7 +34,7 @@ const ModalBasic = () => {
     const [long, setLon] = useState('');
     const navigate = useNavigate();
     const [menuItemActive,setMenuItemActive] = useState(false)
-    const [loginButtonhide,setLoginButtonHide] = useState(true)
+    // const [loginButtonhide,setLoginButtonHide] = useState(true)
     const isLogin = window.localStorage.getItem('UserToken')
     
 useEffect(()=>{
