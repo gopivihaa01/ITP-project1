@@ -33,13 +33,10 @@ const Mpapplication = (props) => {
         position={center}
         /> */}
       {maplocation.map((maploc) => (
-        <Marker icon={icon} key={maploc.Location_id}  position={{ lat: maploc.latitude, lng: maploc.longitude}}  />
+        <Marker onClick={() => navigate(`/otheruserprofile/${maploc.user_id}`)} icon={icon} key={maploc.user_id}  position={{ lat: maploc.latitude, lng: maploc.longitude}}  />
       ))}
-      <InfoWindow onClose={""}></InfoWindow>
-
-
-
-      </Map>
+      {/* <InfoWindow onClose={""}></InfoWindow> */}
+    </Map>
     </>
   );
 }
