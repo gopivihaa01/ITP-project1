@@ -15,6 +15,7 @@ import TextField from '@mui/material/TextField';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import itp from '../assets/ITP.svg';
+import user from '../assets/puser.jpg';
 // import axios from "axios"
 
 
@@ -36,6 +37,7 @@ const ModalBasic = () => {
     const [menuItemActive,setMenuItemActive] = useState(false)
     const [loginButtonhide,setLoginButtonHide] = useState(true)
     const isLogin = window.localStorage.getItem('UserToken')
+    
     
 useEffect(()=>{
 
@@ -117,7 +119,6 @@ useEffect(()=>{
                     toast.success("Login Successfully", {
                         position: "bottom-right"
                     });
-
                 }
                 
             })
@@ -200,7 +201,7 @@ useEffect(()=>{
                     {menuItemActive&&
                     <Menu>
                         <MenuButton className="main-menubutton">
-                            <Avatar className='menubar-avtar' src='image/puser.jpg' />
+                            <img className='menubar-avtar' src={user} />
                         </MenuButton>
                          <MenuList>
                             <MenuItem onClick={navigateToEdit}><FaUserEdit className='editp-icon-menubtn' /> Edit</MenuItem>
