@@ -2,17 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BsFillCameraFill } from 'react-icons/bs';
 import TextField from '@mui/material/TextField';
 import { Col, Row } from 'reactstrap';
+import { Multiselect } from 'multiselect-react-dropdown'
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Autocomplete, Avatar, Box, Chip, FormControl, InputLabel, MenuItem, Select,OutlinedInput } from '@mui/material';
+import { Autocomplete, Avatar, Box, Chip, FormControl, InputLabel, MenuItem, Select, OutlinedInput } from '@mui/material';
 // import { AutoComplete } from '@mui/material/Autocomplete';
 // import { top100Films } from 'src/@fake-db/autocomplete'
 import { Form, InputGroup } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-
-
-
 
 const Editprofile = () => {
     const [editField, setEditField] = useState({
@@ -22,26 +20,41 @@ const Editprofile = () => {
         availabelHour: '',
         startTime: '',
         endTime: '',
-
+        userCountry: '',
+        userState: '',
+        userCity: ''
     });
+//   const  fetchSkill = (data) => {
+            
+//                 console.log(data.skill);
+        
+//         }
+    
+    const skills = [{
+        skillId: "",
+        skill: ""
+    }]
+    console.log(skills);
+    const [options , setOptions ] = useState([{
+        skillId: "",
+        skill: ""
+    }]);
+    
+    // const [userSkill, setUserSkill] = useState([]);
     const [mainskill, setMainSkill] = useState([]);
     const [skillValue, setSkillValue] = React.useState([]);
     const [countries, setCountries] = useState([]);
-    const [userCountry, setUserCountry] = useState('');
     const [state, setState] = useState([]);
-    const [stateid, setStateid] = useState('');
     const [city, setCity] = useState([]);
     const [currency, setCurrency] = useState([]);
+
     const [file, setFile] = useState(null);
     const UserToken = window.localStorage.getItem('UserToken');
     const userId = window.localStorage.getItem('UserID');
-    const [skillName, setSkillName] = React.useState([]);
-console.log(skillValue.map((e)=> e.skill))
-    const uploadavtarData = (file, onUploadProgress) => {
+
+    const uploadavtarData = ( onUploadProgress) => {
         let formData = new FormData();
-
         formData.append("file", 'pin.png');
-
         return axios.post("http://192.168.1.9/itp/api/values/UserProfilePicture?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwianRpIjoiODlkNmQ0ZmYtYWViZi00OTJmLWEwNWYtZjdjYzg4ZmU1NjVjIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiZXhwIjoxNjc0NjQyNDE2LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDM0OSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.xAvrpxdK4VEDBW1sgCNpwOQ-lOphqTSigyl3IpF-kKk&id=1", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -49,31 +62,32 @@ console.log(skillValue.map((e)=> e.skill))
             onUploadProgress,
         });
     }
+
     const showData = () => {
+
         fetch(`http://192.168.1.9/itp/api/values/UserDetails?User_id=${userId}&token=${UserToken}`, {
             method: "GET",
 
         }).then((resp) => {
             resp.json().then((result) => {
+                getSkillData()
                 console.log(result);
-                // setFile(result.user.ProfilePicture)
-                // setFullName(result.user.FullName)
-                // setPhone(result.user.PhoneNumber)
-                // setAvailabelHour(result.rate.Hour)
+                setFile(result.user.ProfilePicture)
                 setEditField({
                     fullName: result.user.FullName,
                     phone: result.user.PhoneNumber,
                     email: result.user.Email,
-                    availabelHour: result.rate.Hour
+                    availabelHour: result.rate.Hour,
+                    userCountry: result.location.Country,
+                    userState: result.location.State,
+                    userCity: result.location.City,
+                    userCurrency: result.currency.Currency
                 })
-                setSkillValue(result.skill)
-                setUserCountry(result.location.Country)
-                setState(result.location.State)
-                setCity(result.location.City)
-                // console.log(result.skill)
 
             })
-        })
+        }
+        
+        )
     }
     //*************************************************************+++++++ On Change ++++++********************************************************* */
     const onChange = (e) => {
@@ -86,48 +100,44 @@ console.log(skillValue.map((e)=> e.skill))
         })
     }
 
-
     //************************+++++ BIND DATA++++***************************
 
-    // const url = `http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
-    // const formData = new FormData ()
-    // formData.append('file',file)
-    // axios.post(url,formData).then((res)=>{
-    //     console.log(res)
-    // })
-    // )}
     useEffect(() => {
         getcountries()
         getstateData()
         getcityData()
-        getSkillData()
+        // getSkillData()
         getcurrency()
+        uploadavtarData()
+        showData();
     }, []);
+    
+    // useEffect(() => {
+    // }, [options]);
 
     const getSkillData = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindSkill`).then(
             (response) => response.json()
         ).then(
             (data) => {
-                setMainSkill(data);
+                data.map((e) => {
+                    console.log(e.Skill_Master_id,e.Skill)
+
+                    skills.push({
+                        skillId: e.Skill_Master_id,
+                        skill: e.Skill
+                    })
+
+                })
             });
-
     }
-    useEffect(() => {
-        uploadavtarData()
-        showData();
-    }, []);
-
-
     const getcountries = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindCountry`)
             .then((response) => response.json())
             .then((data) => {
-                // setCountries(data);
                 setCountries(data)
             });
     }
-
     const getstateData = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindState?Country_id=101`)
             .then((response) => response.json())
@@ -150,19 +160,11 @@ console.log(skillValue.map((e)=> e.skill))
             });
     }
 
-  
+
     const inputFile = useRef();
     const onButtonClick = () => {
         inputFile.current.click();
     };
-    const navigate = useNavigate();
-    const navigateToMap = () => {
-        navigate('/');
-    };
-    const handleChangeskill = (event) => {
-        setSkillName(event.target.value)
-    }
-  
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
@@ -196,8 +198,6 @@ console.log(skillValue.map((e)=> e.skill))
             console.log(event.target.files[0].name);
         }
     };
-    
-
 
     return (
         <div className='main-editprofile'>
@@ -252,71 +252,74 @@ console.log(skillValue.map((e)=> e.skill))
                                 />
                             </Col>
                         </Row>
-                        <FormControl fullWidth className='mainskill-input-edit'>
+                        {/* <FormControl fullWidth className='mainskill-input-edit'>
                             <Autocomplete
                                 multiple
                                 fullWidth
                                 onChange={(e) => {
-                                    setSkillValue();
-                                    console.log(e)
+                                    setSkillValue(e)
                                 }}
-                                options={mainskill}
+                                value={skillValue || ""}
+                                // defaultValue={}
+                                options={mainskill || ""}
                                 filterSelectedOptions
-                                // value={}
                                 id='autocomplete-multiple-outlined'
                                 getOptionLabel={option => option.Skill}
                                 size="small"
-                                renderInput={params => <TextField {...params} label='Main skill'
-                                    required={skillValue.length === 0}
-                                />}
+                                renderInput={(params) => <TextField {...params} label='Main skill' />}
                             />
-                            
-                        </FormControl>
-                      
-
+                        </FormControl> */}
+                        <Multiselect options={options} displayValue={''}/>
+                        
                         <FormControl fullWidth className='mainskill-input-edit' size='small'>
                             <InputLabel id='demo-simple-select-outlined-label'>Country</InputLabel>
                             <Select
                                 onChange={onChange}
+                                name='userCountry'
                                 size="small"
                                 label='country'
                                 id='demo-simple-select-outlined' className='mainskill-inputheight-edit'
-                                labelId='demo-simple-select-outlined-label'
+                                labelId='demo-simple-select-outlined-label' value={editField.userCountry || ""}
                             >
                                 {countries.map((cou) => (
-                                    <MenuItem  value={cou.Country_id}>{cou.Country}</MenuItem>
+                                    <MenuItem value={cou.Country}>{cou.Country}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         <FormControl fullWidth className='mainskill-input-edit'>
                             <InputLabel id='demo-simple-select-outlined-label'>State</InputLabel>
                             <Select
+                                onChange={onChange}
+                                name='userState'
                                 label='State'
                                 id='demo-simple-select-outlined' className='mainskill-inputheight-edit'
-                                labelId='demo-simple-select-outlined-label'
+                                labelId='demo-simple-select-outlined-label' value={editField.userState || ""}
                             >
-                                {state && state.map((v) => (
-                                    <MenuItem value={v.State_Id}>{v.State}</MenuItem>
+                                {state.map((v) => (
+                                    <MenuItem value={v.State}>{v.State}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         <FormControl fullWidth className='mainskill-input-edit'>
                             <InputLabel id='demo-simple-select-outlined-label'>City</InputLabel>
                             <Select
+                                onChange={onChange}
+                                name='userCity'
                                 label='City'
                                 id='demo-simple-select-outlined' className='mainskill-inputheight-edit'
                                 labelId='demo-simple-select-outlined-label'
+                                value={editField.userCity}
                             >
-                                {city && city.map((ct) => (
-                                    <MenuItem value={ct.City_id}>{ct.City}</MenuItem>
+                                {city.map((ct) => (
+                                    <MenuItem value={ct.City}>{ct.City}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         <FormControl fullWidth className='mainskill-input-edit'>
                             <InputGroup size='small'>
-                                <Select size='small' displayEmpty inputProps={{ 'aria-label': 'Without label' }}>
-                                    <MenuItem value=''></MenuItem>
-                                    {currency && currency.map(
+                                <Select size='small' onChange={onChange} displayEmpty inputProps={{ 'aria-label': 'Without label' }} name="userCurrency"
+                                    value={editField.userCurrency || ""}>
+                                    {currency.map(
                                         (c) => (
                                             <MenuItem value={c.Currency_name}>{c.Currency_name}</MenuItem>
                                         ))}
