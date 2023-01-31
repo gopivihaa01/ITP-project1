@@ -9,11 +9,10 @@ const Mpapplication = (props) => {
   const navigate = useNavigate();
   const [maplocation , setMapLocation]= useState ([]);
   const [selectInfowindow , setSelectInfowindow] = useState(null);
-  // const [activeMarker, setActiveMarker] = useState(null);
-  // const [showInfoWindow, setInfoWindowFlag] = useState(true);
+  const [showInfoWindow, setInfoWindowFlag] = useState(true);
+  const [mapAnchor, setMapAnchor] = useState(null);
   // const [center, setCenter] = useState({lat: 23.033863, lng: 72.585022});
   const icon = { url: require("../assets/pin.png"), scaledSize: { width: 35, height: 42 } };
-// console.log(maplocation.map((e) => e.UserData.Id));
   const apiKey = "AIzaSyC1t9XVQUGSxr9Vdn2catWhv4gQJ5AwjL4";
   const getmaplData = () => {
     fetch("http://192.168.1.9/itp/api/values/Location")
@@ -29,32 +28,31 @@ const Mpapplication = (props) => {
   },[]);
   return(
     <>
-      <Map className="mapstyle-main" google={props.google} zoom={5} >
-        {maplocation.map((map)=> (
-        <Marker icon={icon} key={map.UserData.Id} position={{ lat: map.Locationdata.Latitude, lng: map.Locationdata.Longitude}}
-        onClick={()=>{setSelectInfowindow(map)}}
-        />
-        ))}
+      <Map className="mapstyle-main" google={props.google} zoom={5} 
+      >
+        {maplocation.map((m)=> {
+          return(
+            <Marker icon={icon} key={m.UserData.Id} position={{ lat:parseFloat(m.Locationdata.Latitude), lng: parseFloat(m.Locationdata.Longitude)}}
+              onClick={()=>{setSelectInfowindow(m)}}
+            />
+          );
+        })}
         {selectInfowindow && (
-        <InfoWindow 
-          position={{ lat: selectInfowindow.Locationdata.Latitude, lng: selectInfowindow.Locationdata.Longitude}}
+        <InfoWindow onCloseClick={""}
+          anchor={mapAnchor}
+          visible={showInfoWindow}
+          position={{ lat: parseFloat(selectInfowindow.Locationdata.Latitude), lng: parseFloat(selectInfowindow.Locationdata.Longitude)}}
         >
-          <div>{selectInfowindow.UserData.FullName}</div>
+        <div className='infowindow-main'>
+          <img className='infowindow-img' src="http://192.168.1.9/itp/Files/Images/avatar.png"/>
+          <a className='infowindow-content' href={`http://localhost:3000/otheruserprofile/${selectInfowindow.UserData.Id}`}><h6>{selectInfowindow.UserData.FullName}</h6></a>
+        </div>
         </InfoWindow>)}
+        
+        {/* <Marker onClick={() => navigate("/otheruserprofile")} */}
 
-
-
-
-
-        {/* <Marker onClick={() => navigate("/otheruserprofile")}
-        icon={icon} 
-        position={center}
-        /> */}
-      {/* {maplocation.map((maploc) => (
-        <Marker onClick={() => navigate(`/otheruserprofile/${maploc.user_id}`)} icon={icon} key={maploc.user_id}  position={{ lat: maploc.latitude, lng: maploc.longitude}}  />
-      ))} */}
-      {/* <InfoWindow onClose={""}></InfoWindow> */}
     </Map>
+    
     </>
   );
 }
