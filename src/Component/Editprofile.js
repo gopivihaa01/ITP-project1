@@ -3,7 +3,6 @@ import { BsFillCameraFill } from 'react-icons/bs';
 import TextField from '@mui/material/TextField';
 import { Col, Row } from 'reactstrap';
 import { Multiselect } from 'multiselect-react-dropdown'
-import { useNavigate, useLocation } from 'react-router-dom';
 import { Autocomplete, Avatar, Box, Chip, FormControl, InputLabel, MenuItem, Select, OutlinedInput } from '@mui/material';
 // import { AutoComplete } from '@mui/material/Autocomplete';
 // import { top100Films } from 'src/@fake-db/autocomplete'
@@ -24,35 +23,22 @@ const Editprofile = () => {
         userState: '',
         userCity: ''
     });
-//   const  fetchSkill = (data) => {
-            
-//                 console.log(data.skill);
-        
-//         }
-    
-    const skills = [{
-        skillId: "",
-        skill: ""
-    }]
-    console.log(skills);
-    const [options , setOptions ] = useState([{
-        skillId: "",
-        skill: ""
-    }]);
-    
-    // const [userSkill, setUserSkill] = useState([]);
-    const [mainskill, setMainSkill] = useState([]);
-    const [skillValue, setSkillValue] = React.useState([]);
+    console.log(editField);
+    let abc = []
+    const [userSkill, setUserSkill] = useState();
+    console.log(userSkill)
+    const option = []
+    const [skill, setSkill] = useState(option);
+    console.log(option)
     const [countries, setCountries] = useState([]);
     const [state, setState] = useState([]);
     const [city, setCity] = useState([]);
     const [currency, setCurrency] = useState([]);
-
     const [file, setFile] = useState(null);
     const UserToken = window.localStorage.getItem('UserToken');
     const userId = window.localStorage.getItem('UserID');
 
-    const uploadavtarData = ( onUploadProgress) => {
+    const uploadavtarData = (onUploadProgress) => {
         let formData = new FormData();
         formData.append("file", 'pin.png');
         return axios.post("http://192.168.1.9/itp/api/values/UserProfilePicture?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwianRpIjoiODlkNmQ0ZmYtYWViZi00OTJmLWEwNWYtZjdjYzg4ZmU1NjVjIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiZXhwIjoxNjc0NjQyNDE2LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDM0OSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.xAvrpxdK4VEDBW1sgCNpwOQ-lOphqTSigyl3IpF-kKk&id=1", formData, {
@@ -64,14 +50,18 @@ const Editprofile = () => {
     }
 
     const showData = () => {
-
         fetch(`http://192.168.1.9/itp/api/values/UserDetails?User_id=${userId}&token=${UserToken}`, {
             method: "GET",
-
         }).then((resp) => {
+            // getSkillData()
             resp.json().then((result) => {
-                getSkillData()
-                console.log(result);
+                result.skill.map((e) => {
+                    setUserSkill([{
+                        skillId: e.Skill_Master_id,
+                        skill: e.skill
+                    }])
+                })
+
                 setFile(result.user.ProfilePicture)
                 setEditField({
                     fullName: result.user.FullName,
@@ -86,7 +76,7 @@ const Editprofile = () => {
 
             })
         }
-        
+
         )
     }
     //*************************************************************+++++++ On Change ++++++********************************************************* */
@@ -100,18 +90,24 @@ const Editprofile = () => {
         })
     }
 
+    const handleSkillData = (e) => {
+        setUserSkill({
+            skill: e.target.value
+        })
+    }
+
     //************************+++++ BIND DATA++++***************************
 
     useEffect(() => {
         getcountries()
         getstateData()
         getcityData()
-        // getSkillData()
+        getSkillData()
         getcurrency()
         uploadavtarData()
         showData();
     }, []);
-    
+
     // useEffect(() => {
     // }, [options]);
 
@@ -121,13 +117,10 @@ const Editprofile = () => {
         ).then(
             (data) => {
                 data.map((e) => {
-                    console.log(e.Skill_Master_id,e.Skill)
-
-                    skills.push({
+                    option.push({
                         skillId: e.Skill_Master_id,
                         skill: e.Skill
                     })
-
                 })
             });
     }
@@ -159,7 +152,6 @@ const Editprofile = () => {
                 setCurrency(data);
             });
     }
-
 
     const inputFile = useRef();
     const onButtonClick = () => {
@@ -216,7 +208,7 @@ const Editprofile = () => {
                         <TextField id="outlined-basic" className="textfieldform-edit w-100" name='phone' label="Mobile number :"
                             value={editField.phone} onChange={onChange} /><br />
                         <ToastContainer />
-                        <TextField id="outlined-basic" className='w-100 textfieldform-edit' label="Email Address :" name='email' type="text" vlaue={editField.email} onChange={onChange} /><br />
+                        <TextField id="outlined-basic" className='w-100 textfieldform-edit' label="Email Address :" name='email' type="text" value={editField.email} onChange={onChange} /><br />
 
                         <TextField id="outlined-basic" className="textfieldform-edit w-100" label="Availabel hour :" type="text" name='availabelHour' value={editField.availabelHour} onChange={onChange} /><br />
                         <ToastContainer />
@@ -252,8 +244,8 @@ const Editprofile = () => {
                                 />
                             </Col>
                         </Row>
-                        {/* <FormControl fullWidth className='mainskill-input-edit'>
-                            <Autocomplete
+
+                        {/* <Autocomplete
                                 multiple
                                 fullWidth
                                 onChange={(e) => {
@@ -264,13 +256,15 @@ const Editprofile = () => {
                                 options={mainskill || ""}
                                 filterSelectedOptions
                                 id='autocomplete-multiple-outlined'
-                                getOptionLabel={option => option.Skill}
+                                getOptionLabel={option => option}
                                 size="small"
                                 renderInput={(params) => <TextField {...params} label='Main skill' />}
-                            />
-                        </FormControl> */}
-                        <Multiselect options={options} displayValue={''}/>
-                        
+                            />*/}
+                        <FormControl fullWidth className='mainskill-input-edit'>
+
+                            <Multiselect placeholder="Skill" selectedValues={userSkill} options={skill} onChange={handleSkillData} displayValue='skill' />
+                        </FormControl>
+
                         <FormControl fullWidth className='mainskill-input-edit' size='small'>
                             <InputLabel id='demo-simple-select-outlined-label'>Country</InputLabel>
                             <Select
@@ -282,7 +276,7 @@ const Editprofile = () => {
                                 labelId='demo-simple-select-outlined-label' value={editField.userCountry || ""}
                             >
                                 {countries.map((cou) => (
-                                    <MenuItem value={cou.Country}>{cou.Country}</MenuItem>
+                                    <MenuItem value={cou.Country_id}>{cou.Country}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -296,7 +290,7 @@ const Editprofile = () => {
                                 labelId='demo-simple-select-outlined-label' value={editField.userState || ""}
                             >
                                 {state.map((v) => (
-                                    <MenuItem value={v.State}>{v.State}</MenuItem>
+                                    <MenuItem value={v.State_Id}>{v.State}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -311,7 +305,7 @@ const Editprofile = () => {
                                 value={editField.userCity}
                             >
                                 {city.map((ct) => (
-                                    <MenuItem value={ct.City}>{ct.City}</MenuItem>
+                                    <MenuItem value={ct.City_id}>{ct.City}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -321,7 +315,7 @@ const Editprofile = () => {
                                     value={editField.userCurrency || ""}>
                                     {currency.map(
                                         (c) => (
-                                            <MenuItem value={c.Currency_name}>{c.Currency_name}</MenuItem>
+                                            <MenuItem value={c.Currency_Master_Id}>{c.Currency_name}</MenuItem>
                                         ))}
                                 </Select>
                                 <Form.Control aria-label="Text input with 2 dropdown buttons" />
