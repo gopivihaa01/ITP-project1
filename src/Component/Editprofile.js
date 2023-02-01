@@ -24,7 +24,6 @@ const Editprofile = () => {
         userCity: ''
     });
     console.log(editField);
-    let abc = []
     const [userSkill, setUserSkill] = useState();
     console.log(userSkill)
     const option = []
@@ -54,12 +53,15 @@ const Editprofile = () => {
             method: "GET",
         }).then((resp) => {
             // getSkillData()
+            const skillarr = new Array
+            console.log(skillarr)
             resp.json().then((result) => {
                 result.skill.map((e) => {
-                    setUserSkill([{
+                    skillarr.push({
                         skillId: e.Skill_Master_id,
                         skill: e.skill
-                    }])
+                })
+                setUserSkill(skillarr)
                 })
 
                 setFile(result.user.ProfilePicture)
@@ -91,9 +93,9 @@ const Editprofile = () => {
     }
 
     const handleSkillData = (e) => {
-        setUserSkill({
-            skill: e.target.value
-        })
+        // setUserSkill({
+        //     skill: e.target.value
+        // })
     }
 
     //************************+++++ BIND DATA++++***************************
