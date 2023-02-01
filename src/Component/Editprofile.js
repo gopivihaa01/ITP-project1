@@ -3,32 +3,14 @@ import { BsFillCameraFill } from 'react-icons/bs';
 import TextField from '@mui/material/TextField';
 import { Col, Row } from 'reactstrap';
 import { Multiselect } from 'multiselect-react-dropdown'
-import { Autocomplete, Avatar, Box, Chip, FormControl, InputLabel, MenuItem, Select, OutlinedInput } from '@mui/material';
-// import { AutoComplete } from '@mui/material/Autocomplete';
-// import { top100Films } from 'src/@fake-db/autocomplete'
-import { Form, InputGroup } from 'react-bootstrap';
+import {  Avatar,   FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {  InputGroup } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 const Editprofile = () => {
-    const [editField, setEditField] = useState({
-        fullName: "",
-        phone: '',
-        email: '',
-        availabelHour: '',
-        startTime: '',
-        endTime: '',
-        userCountry: '',
-        userState: '',
-        userCity: ''
-    });
-    console.log(editField);
-    const [userSkill, setUserSkill] = useState();
-    console.log(userSkill)
-    const option = []
-    const [skill, setSkill] = useState(option);
-    console.log(option)
+    const [skills, setSkill] = useState([]);
     const [countries, setCountries] = useState([]);
     const [state, setState] = useState([]);
     const [city, setCity] = useState([]);
@@ -36,7 +18,34 @@ const Editprofile = () => {
     const [file, setFile] = useState(null);
     const UserToken = window.localStorage.getItem('UserToken');
     const userId = window.localStorage.getItem('UserID');
-
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("user"))
+    const userDetails = JSON.parse(window.sessionStorage.getItem("users"))
+    const userGetLocation = userDetails[0].location
+    // console.log(userLocation.State_id)
+    const [userData, setUserData] = useState({
+        Id : userId,
+        fullName : "",
+        email: ""
+    });
+    const [locationdata, setLocationdata] = useState({
+        userCountry: userGetLocation.Country_id,
+        userState: userGetLocation.State_id,
+        userCity: userGetLocation.City_id
+    });
+    console.log(locationdata)
+    const [phoneNumber, setPhoneNumber] = useState(
+    );
+    const [Ratedata, setRate] = useState({
+        availabelHour: '',
+    });
+    const [userSkill, setUserSkill] = useState();
+    const [durationData, setDurationData] = useState({
+        startTime: '',
+        endTime: ''
+    });    
+    const [currencyData, setCurrencyData] = useState({
+        userCurrency:'INR'
+    });
     const uploadavtarData = (onUploadProgress) => {
         let formData = new FormData();
         formData.append("file", 'pin.png');
@@ -63,19 +72,41 @@ const Editprofile = () => {
                 })
                 setUserSkill(skillarr)
                 })
-
                 setFile(result.user.ProfilePicture)
-                setEditField({
+                phoneNumber(result.user.PhoneNumber)
+                setUserData({
                     fullName: result.user.FullName,
-                    phone: result.user.PhoneNumber,
-                    email: result.user.Email,
-                    availabelHour: result.rate.Hour,
-                    userCountry: result.location.Country,
-                    userState: result.location.State,
-                    userCity: result.location.City,
+                    email: result.user.Email
+                })
+                setLocationdata({
+                    userCountry: result.location.Country_id,
+                    userState: result.location.State_id,
+                    userCity: result.location.City_id
+                })
+                setRate({
+                    availabelHour: result.rate.Hour
+                })
+                setCurrencyData({
                     userCurrency: result.currency.Currency
                 })
+                // const userdetails = new Array
+                // userdetails.push({
+                //     "fullName": result.user.FullName,
+                //     "phoneNumber": result.user.PhoneNumber,
+                //     "email": result.user.Email,
+                //     "availabelHour": result.rate.Hour,
+                //     "userCountry": result.location.Country_id,
+                //     "userState": result.location.State_id,
+                //     "userCity": result.location.City_id,
+                //     "userCurrency": result.currency.Currency
+                // })
+                const usersdetails = new Array
+                usersdetails.push(result)
+                sessionStorage.setItem("users",JSON.stringify(usersdetails));
 
+                console.log(usersdetails)
+                // sessionStorage.setItem("user",JSON.stringify(userdetails));
+                
             })
         }
 
@@ -84,48 +115,81 @@ const Editprofile = () => {
     //*************************************************************+++++++ On Change ++++++********************************************************* */
     const onChange = (e) => {
         const { name, value } = e.target;
+        console.log(name, value);
         setEditField(() => {
             return {
                 ...editField,
                 [name]: value
             }
         })
+        setUserData(()=>{
+            return{
+                ...userData,
+                [name] : value
+            }
+        })
+        setLocationdata(()=>{
+            return{
+                ...locationdata,
+                [name] : value
+            }
+        })
+        setRate(()=>{
+            return{
+                ...Ratedata,
+                [name] : value
+            } 
+        })
+        setDurationData(()=>{
+            return{
+                ...durationData,
+                [name] : value
+            } 
+        })
+        setCurrencyData(()=>{
+            return{
+                ...currencyData,
+                [name] : value
+            } 
+        })
+        
     }
-
     const handleSkillData = (e) => {
-        // setUserSkill({
-        //     skill: e.target.value
-        // })
+        setUserSkill(e)
     }
 
     //************************+++++ BIND DATA++++***************************
 
     useEffect(() => {
         getcountries()
-        getstateData()
-        getcityData()
         getSkillData()
         getcurrency()
         uploadavtarData()
         showData();
     }, []);
-
-    // useEffect(() => {
-    // }, [options]);
+    
+    useEffect(() => {
+        getstateData()
+        getcityData()
+    }, [editField]);
 
     const getSkillData = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindSkill`).then(
-            (response) => response.json()
-        ).then(
+            (response) =>{
+                const option = new Array
+             response.json().then(
             (data) => {
-                data.map((e) => {
+                data.map((e)=>{
                     option.push({
-                        skillId: e.Skill_Master_id,
+                        skillId : e.Skill_Master_id,
                         skill: e.Skill
                     })
+                    setSkill(option)
                 })
-            });
-    }
+            })
+        }
+        )
+      }
     const getcountries = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindCountry`)
             .then((response) => response.json())
@@ -134,14 +198,14 @@ const Editprofile = () => {
             });
     }
     const getstateData = () => {
-        fetch(`http://192.168.1.9/itp/api/values/BindState?Country_id=101`)
+        fetch(`http://192.168.1.9/itp/api/values/BindState?Country_id=${locationdata.userCountry}`)
             .then((response) => response.json())
             .then(data => {
                 setState(data);
             });
     }
     const getcityData = () => {
-        fetch(`http://192.168.1.9/itp/api/values/BindCity?State_id=12`)
+        fetch(`http://192.168.1.9/itp/api/values/BindCity?State_id=${locationdata.userState}`)
             .then((response) => response.json())
             .then(data => {
                 setCity(data);
@@ -162,23 +226,23 @@ const Editprofile = () => {
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        if (editField.fullName.length === 0) {
+        if (userData.fullName.length === 0) {
             toast.error("Enter the valid name", {
                 position: "bottom-right"
             });
-        } else if (editField.phone.length !== 10) {
+        } else if (editField.phoneNumber.length !== 10) {
             toast.error("Enter the mobile number", {
                 position: "bottom-right"
             });
-        } else if (editField.availabelHour.length === 0) {
+        } else if (Ratedata.availabelHour.length === 0) {
             toast.error("Enter the Availabel Hour", {
                 position: "bottom-right"
             });
-        } else if (editField.startTime.length === 0) {
+        } else if (durationData.startTime.length === 0) {
             toast.error("Select the start time", {
                 position: "bottom-right"
             });
-        } else if (editField.endTime.length === 0) {
+        } else if (durationData.endTime.length === 0) {
             toast.error("Select the end time", {
                 position: "bottom-right"
             });
@@ -197,22 +261,22 @@ const Editprofile = () => {
         <div className='main-editprofile'>
             <div className='other-userprofile'>Edit Profile</div>
             <Avatar id="avatar" className='avtar-editprofile-page' src={file} />
-            <div className='edit-camera-circle'>
+            <div  className='edit-camera-circle'>
                 <input type='file' id='file' ref={inputFile} style={{ display: 'none' }} onChange={handleChangeavtar} accept="image/*" />
-                <BsFillCameraFill onClick={onButtonClick} className='edit-camera' />
+                <BsFillCameraFill   onClick={onButtonClick} className='edit-camera' />
             </div>
             <Row className="justify-content-md-center ">
                 <Col sm={6} className="colSize">
                     <form className='mainform.edit' onSubmit={onSubmitHandler}>
                         <TextField id="outlined-basic" className="textfieldform-edit w-100" name='fullName' label="Full Name :" type="text"
-                            value={editField.fullName} onChange={onChange} /><br />
+                            value={userData.fullName} onChange={onChange} /><br />
                         <ToastContainer />
-                        <TextField id="outlined-basic" className="textfieldform-edit w-100" name='phone' label="Mobile number :"
-                            value={editField.phone} onChange={onChange} /><br />
+                        <TextField id="outlined-basic" className="textfieldform-edit w-100" name='phoneNumber' label="Mobile number :"
+                            value={phoneNumber} onChange={onChange} /><br />
                         <ToastContainer />
-                        <TextField id="outlined-basic" className='w-100 textfieldform-edit' label="Email Address :" name='email' type="text" value={editField.email} onChange={onChange} /><br />
+                        <TextField id="outlined-basic" className='w-100 textfieldform-edit' label="Email Address :" name='email' type="text" value={userData.email} onChange={onChange} /><br />
 
-                        <TextField id="outlined-basic" className="textfieldform-edit w-100" label="Availabel hour :" type="text" name='availabelHour' value={editField.availabelHour} onChange={onChange} /><br />
+                        <TextField id="outlined-basic" className="textfieldform-edit w-100" label="Availabel hour :" type="text" name='availabelHour' value={Ratedata.availabelHour} onChange={onChange} /><br />
                         <ToastContainer />
                         <Row style={{ marginTop: "10px" }}>
                             <Col sm={6} >
@@ -221,7 +285,8 @@ const Editprofile = () => {
                                     label="StartTime :"
                                     name='startTime'
                                     type="time"
-                                    value={editField.startTime} onChange={onChange}
+                                    value={durationData.startTime || ""} 
+                                    onChange={onChange}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
@@ -236,7 +301,7 @@ const Editprofile = () => {
                                     label="EndTime :"
                                     name='endTime'
                                     type="time"
-                                    value={editField.endTime} onChange={onChange}
+                                    value={durationData.endTime} onChange={onChange}
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
@@ -247,24 +312,17 @@ const Editprofile = () => {
                             </Col>
                         </Row>
 
-                        {/* <Autocomplete
-                                multiple
-                                fullWidth
-                                onChange={(e) => {
-                                    setSkillValue(e)
-                                }}
-                                value={skillValue || ""}
-                                // defaultValue={}
-                                options={mainskill || ""}
-                                filterSelectedOptions
-                                id='autocomplete-multiple-outlined'
-                                getOptionLabel={option => option}
-                                size="small"
-                                renderInput={(params) => <TextField {...params} label='Main skill' />}
-                            />*/}
+                    
                         <FormControl fullWidth className='mainskill-input-edit'>
-
-                            <Multiselect placeholder="Skill" selectedValues={userSkill} options={skill} onChange={handleSkillData} displayValue='skill' />
+                            
+                            <Multiselect  
+                            placeholder="Skill" 
+                            selectedValues={userSkill} 
+                            options={skills} 
+                            onRemove={
+                                handleSkillData}
+                            onSelect={handleSkillData}
+                            displayValue='skill' />
                         </FormControl>
 
                         <FormControl fullWidth className='mainskill-input-edit' size='small'>
@@ -275,7 +333,8 @@ const Editprofile = () => {
                                 size="small"
                                 label='country'
                                 id='demo-simple-select-outlined' className='mainskill-inputheight-edit'
-                                labelId='demo-simple-select-outlined-label' value={editField.userCountry || ""}
+                                labelId='demo-simple-select-outlined-label'
+                                 value={locationdata.userCountry || ""}
                             >
                                 {countries.map((cou) => (
                                     <MenuItem value={cou.Country_id}>{cou.Country}</MenuItem>
@@ -289,9 +348,10 @@ const Editprofile = () => {
                                 name='userState'
                                 label='State'
                                 id='demo-simple-select-outlined' className='mainskill-inputheight-edit'
-                                labelId='demo-simple-select-outlined-label' value={editField.userState || ""}
+                                labelId='demo-simple-select-outlined-label' 
+                                value={locationdata.userState || ""}
                             >
-                                {state.map((v) => (
+                                {state && state.map((v) => (
                                     <MenuItem value={v.State_Id}>{v.State}</MenuItem>
                                 ))}
                             </Select>
@@ -304,9 +364,9 @@ const Editprofile = () => {
                                 label='City'
                                 id='demo-simple-select-outlined' className='mainskill-inputheight-edit'
                                 labelId='demo-simple-select-outlined-label'
-                                value={editField.userCity}
+                                value={editField.userCity || ""}
                             >
-                                {city.map((ct) => (
+                                {city && city.map((ct) => (
                                     <MenuItem value={ct.City_id}>{ct.City}</MenuItem>
                                 ))}
                             </Select>
@@ -314,14 +374,14 @@ const Editprofile = () => {
                         <FormControl fullWidth className='mainskill-input-edit'>
                             <InputGroup size='small'>
                                 <Select size='small' onChange={onChange} displayEmpty inputProps={{ 'aria-label': 'Without label' }} name="userCurrency"
-                                    value={editField.userCurrency || ""}>
+                                    value={currencyData.userCurrency || ""}>
                                     {currency.map(
                                         (c) => (
-                                            <MenuItem value={c.Currency_Master_Id}>{c.Currency_name}</MenuItem>
+                                            <MenuItem value={c.Currency_name}>{c.Currency_name}</MenuItem>
                                         ))}
                                 </Select>
-                                <Form.Control aria-label="Text input with 2 dropdown buttons" />
-                                <Form.Control aria-label="Text input with 2 dropdown buttons" />
+                                {/* <Form.Control aria-label="Text input with 2 dropdown buttons" /> */}
+                                {/* <Form.Control aria-label="Text input with 2 dropdown buttons" /> */}
                             </InputGroup>
                         </FormControl>
                         <button className='submit-btn-edit' type="submit" value="Submit" onClick={uploadavtarData}>Submit</button>
