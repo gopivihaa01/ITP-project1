@@ -1,5 +1,5 @@
 import {HiOutlineArrowRight}from 'react-icons/hi';
-import location from "../assets/distanceimg.png"
+import locimg from "../assets/distanceimg.png";
 import { Chip, Typography } from "@mui/material";
 import { Col, Label, Row } from "reactstrap";
 import avtar from "../assets/puser.jpg";
@@ -14,7 +14,7 @@ const Otheruserprofile = () => {
     const location = (window.location.pathname).split("/")
     console.log(location[2]);
     const getallUserData = () => {
-        fetch(`http://192.168.1.9/itp/api/values/freeUserDetails?User_id=${15}`)
+        fetch(`http://192.168.1.9/itp/api/values/freeUserDetails?User_id=${location[2]}`)
 
             .then((response) => response.json())
             .then(data => {
@@ -63,7 +63,7 @@ const Otheruserprofile = () => {
                     {userDetail.Email}
                 </Label><br />
                 <div className="maindiv-otheruser">
-                    <img src={location} />
+                    <img src={locimg} />
                     <h3 className='hthree-maindiv-otheruser'>3.5km</h3>
                     <HiOutlineArrowRight className="right-arrow-otheruser" />
                 </div>

@@ -372,10 +372,8 @@
     color:white;
 }
 .header-mainavtar-chat{
-    margin-top: 10px;
-    width: 50px !important;
-    height: 50px !important;
-    border-radius: 50%;
+    color: white;
+    margin: 22px 15px;
 }
 .header-avtar-chat{
     margin: 10px;
@@ -383,11 +381,12 @@
     height: 50px !important;
 }
 .header-search-chat{
-    border-radius: 50px !important;
-    height: 39px !important;
-    width: 260px !important;
-    margin-left: 15px;
-    margin-top: 23px;
+    height: 27px !important;
+    width: 169px !important;
+    color: white;
+    margin-top: 28px;
+    position: absolute;
+    left: 250px;
 }
 .col {
     flex: none !important;
@@ -433,6 +432,12 @@
     position: absolute;
     right: 44px;
     top: 28px;
+}
+.badge-avtar{
+    height: 20px!important;
+    width:20px !important;
+    margin: 9px;
+    border-radius: 50%;
 }
 .avtarfst-chat{
     height: 50px!important;
@@ -499,6 +504,17 @@
 .sendicon-footer-chat{
     margin:15px 20px;
     font-size: 20px;
+}
+.infowindow-main{
+    display: flex;
+}
+.infowindow-img{
+    height:40px;
+}
+.infowindow-content{
+    font-size: 30px;
+    margin: 8px 6px;
+    color: blue;
 }
 /* .member-modal{
     font-size: 13px;

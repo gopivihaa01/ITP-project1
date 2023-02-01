@@ -4,18 +4,19 @@ import{FiImage , FiSend}from 'react-icons/fi';
 import{FaPhoneAlt,FaVideo}from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import{IoIosArrowBack}from'react-icons/io';
+import{GoSearch} from 'react-icons/go';
 import avtar from "../assets/puser.jpg";
 import { useEffect, useState } from "react";
 
 
 const Chat=()=>{
     const navigate = useNavigate();
-    const [useronedetail , setUseOneDetail] = useState([]);
+    // const [useronedetail , setUseOneDetail] = useState([]);
     const navigateToMap = () => {
         navigate('/');
     };
     const getuserchatData = () => {
-        fetch(`http://192.168.1.9/itp/api/chat/userChatList?id=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwianRpIjoiZGYwYzQxMTItMDhkMS00YjA4LWIyZjktOTk2ZmMzMDliNTJmIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiZXhwIjoxNjc0ODE2NTI0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDM0OSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.SGJhuwBGJ2YVsgcCpYf136FChsfT9nHrwOoGrSPmIbE`)
+        fetch(`http://192.168.1.9/itp/api/chat/userChatList?id=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwianRpIjoiMDljNDIyNzMtMmJjZi00ZDBkLTg4NjAtODg5NmQyYTc5ODRjIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiZXhwIjoxNjc1MTY5OTM1LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDM0OSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.GYbXlhOmwcTa23zB4YUOCkB2HJygpKJ-6aloneLFFCE`)
         .then((response) => response.json())
         .then((data)=>{
             console.log(data)
@@ -31,10 +32,11 @@ const Chat=()=>{
                     <Col className="fstcol-chat">
                         <div className="fstcol-header-chat">
                             <IoIosArrowBack  onClick={navigateToMap} className="back-icon-chat" />
-                            <Avatar  className='header-mainavtar-chat' src={avtar} />
-                            <Input className="header-search-chat" type="" placeholder="Search.."></Input>
+                            <h2  className='header-mainavtar-chat'>Chats</h2>
+                            {/* <Avatar  className='header-mainavtar-chat' src={avtar} /> */}
+                            <GoSearch className="header-search-chat"/>
+                            {/* <Input className="header-search-chat" type="" placeholder="Search.."></Input> */}
                         </div>
-                        <Label className="main-chat-header">Chats</Label>
                         <button className="fstmsg-chat">
                             <div><Avatar className='header-avtar-chat' src={avtar}/></div>
                             <div>
@@ -62,6 +64,7 @@ const Chat=()=>{
                         <div>
                             <div>
                                 <Badge color="white" className="otheruser-badges-leftchat"> Hello .! </Badge>
+                                <Avatar className="badge-avtar" src={avtar}/>
                             </div>
                             <div>
                             <Badge color="cornflowerblue" className="user-badges-rightchat"> Hello .! </Badge><br /><br />
