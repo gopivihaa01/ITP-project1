@@ -11,7 +11,9 @@ const Mpapplication = (props) => {
   const [selectInfowindow , setSelectInfowindow] = useState(null);
   const [showInfoWindow, setInfoWindowFlag] = useState(true);
   const [mapAnchor, setMapAnchor] = useState(null);
-  // const [center, setCenter] = useState({lat: 23.033863, lng: 72.585022});
+  const latitude = 23.014509 ;
+  const longitude = 72.591759 ;
+  const [center, setCenter] = useState({lat: 23.033863, lng: 72.585022});
   const icon = { url: require("../assets/pin.png"), scaledSize: { width: 35, height: 42 } };
   const apiKey = "AIzaSyC1t9XVQUGSxr9Vdn2catWhv4gQJ5AwjL4";
   const getmaplData = () => {
@@ -22,18 +24,20 @@ const Mpapplication = (props) => {
         setMapLocation(result.Userlist);
       })
     })
+    
   }
   useEffect(() => {
     getmaplData();
-  },[]);
+  },
+  []);
   return(
     <>
-      <Map className="mapstyle-main" google={props.google} zoom={5} 
+      <Map className="mapstyle-main" google={props.google} zoom={9} initialCenter={center}
       >
         {maplocation.map((m)=> {
           return(
             <Marker icon={icon} key={m.UserData.Id} position={{ lat:parseFloat(m.Locationdata.Latitude), lng: parseFloat(m.Locationdata.Longitude)}}
-              onClick={()=>{setSelectInfowindow(m)}}
+             onClick={()=>{setSelectInfowindow(m)}}
             />
           );
         })}
