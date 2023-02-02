@@ -12,20 +12,57 @@ import { useEffect, useState } from "react";
 const Chat = () => {
     const navigate = useNavigate();
     const [useronedetail, setUseOneDetail] = useState([]);
-    console.log(useronedetail)
+    const [userchat, setUserChat] = useState(false);
+    const [onClickUserId, setOnClickUserId] = useState();
+    const [onClickUserName, setOnClickUserName] = useState();
+    const [chatuserdata , setChatUserData] = useState({});
+    console.log(onClickUserName)
     const navigateToMap = () => {
         navigate('/');
     };
+    const loginUserId = localStorage.getItem('UserID');
+    const userToken = localStorage.getItem('UserToken');
     const getuserchatData = () => {
-        fetch(`http://192.168.1.9/itp/api/chat/userChatList?id=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwianRpIjoiOGZhMGQzYzItOGFmNy00ODUxLTg4MWUtYmIyZjg3MDhlMWY0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxIiwiZXhwIjoxNjc1MzIyNDU3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDM0OSIsImF1ZCI6IlNlY3VyZUFwaVVzZXIifQ.ScWoAyZL6soZzW9wVQqAWSFYj32HtjbjuuXCN8t1WVo`)
+        fetch(`http://192.168.1.9/itp/api/chat/userChatList?id=${loginUserId}&token=${userToken}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
                 setUseOneDetail(data);
             })
     }
+    const savechatuser = () =>{
+        fetch(`http://192.168.1.9/itp/api/chat/SaveChat?token=${userToken}`,{
+            method:"POST",
+            headers: {
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                Sender_ID:loginUserId,
+                Reciever_ID:15,
+            })
+        }).then((resp) => {
+            resp.json().then((resp) => {
+                console.log("resp", resp)
+            })
+        })
+    }
+    const getusermessage = () =>{
+        fetch(`http://192.168.1.9/itp/api/chat/userMessagesbyuserid?chatId=2008&token=${userToken}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data.Messages)
+                setChatUserData(data.Messages);
+                console.log(chatuserdata 
+                    
+                    
+                    )
+            })
+    }
     useEffect(() => {
         getuserchatData()
+        getusermessage()
     }, []);
     return (
         <>
@@ -38,7 +75,13 @@ const Chat = () => {
                             <GoSearch className="header-search-chat" />
                         </div>
                         {useronedetail.map((user) => (
-                            <button className="fstmsg-chat">
+                            <button className="fstmsg-chat" onClick={() => {
+                                savechatuser();
+                                setUserChat(true);
+                                setOnClickUserId(user.Chat_Id)
+                                setOnClickUserName(user.Tousername)
+                               
+                                }}>
                                 <div><Avatar className='header-avtar-chat' src="http://192.168.1.9/itp/Files/Images/avatar.png" /></div>
                                 <div>
                                     <h6 className="title-contentmsg-chat">{user.Tousername}</h6>
@@ -48,29 +91,31 @@ const Chat = () => {
                         ))}
 
                     </Col>
-                    <Col className="seccol-chat">
-                        <div className="seccol-chatcontent-chat">
-                            <Avatar className='avtarfst-chat' src={avtar} />
-                            <h6 className="headerchat-seccol-chat">Kitty Allanson</h6>
+                   {userchat && <Col className="seccol-chat">
+                       <div className="seccol-chatcontent-chat">
+                        <Avatar className='avtarfst-chat' src={avtar} />
+                        <h6 className="headerchat-seccol-chat">{onClickUserName}</h6>
                             <div className="main-menubar-chat">
                                 <FaVideo className="righticon-menubar-chat" />
                                 <FaPhoneAlt className="righticon-menubar-chat" />
                             </div>
-                        </div>
+                        </div> 
                         <div>
                             <div>
                                 <Badge color="white" className="otheruser-badges-leftchat"> Hello .! </Badge>
                                 <Avatar className="badge-avtar" src={avtar} />
                                 <p className="time-fstchat">3:45 pm</p>
                             </div>
+                            {/* {chatuserdata.map((chat) => ( */}
                             <div>
-                                <Badge color="cornflowerblue" className="user-badges-rightchat"> Hello .! </Badge>
+                                <Badge color="cornflowerblue" className="user-badges-rightchat">{chatuserdata.Messages}</Badge>
                                 <Avatar className="badge-avtar-tochat" src={avtar} />
-                                <p className="time-fstchat-tofst">3:45 pm</p> <br /><br /><br />
-                                <Badge color="cornflowerblue" className="user-badgessec-rightchat"> How can I help You .? </Badge>
+                                <p className="time-fstchat-tofst">{}</p> <br /><br /><br />
+                                {/* <Badge color="cornflowerblue" className="user-badgessec-rightchat"> How can I help You .? </Badge>
                                 <Avatar className="badge-avtar-tochat" src={avtar} />
-                                <p className="time-fstchat-tofst">3:45 pm</p>
+                                <p className="time-fstchat-tofst">3:45 pm</p> */}
                             </div>
+                            {/* ))}  */}
                         </div>
                         <div className="main-footer-chat">
                             <FiImage className="imageicon-footer-chat" />
@@ -79,7 +124,7 @@ const Chat = () => {
                         </div>
 
 
-                    </Col>
+                    </Col>} 
 
                 </Row>
 

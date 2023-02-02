@@ -9,6 +9,9 @@ import { useNavigate } from 'react-router-dom';
 function getDistance ({}){
 
 }
+
+var distances;
+
 const Otheruserprofile = () => {
     const [userDetail, setUserDetail] = useState({});
     const [userCurrency, setUserCurrency] = useState({});
@@ -20,17 +23,16 @@ const Otheruserprofile = () => {
     const [userLon, setUserLon] = useState({});
     const [lat, setLat] = useState('');
     const [long, setLon] = useState('');
-
     const navigate = useNavigate();
 
     const loginUserId = localStorage.getItem('UserID');
     const userToken = localStorage.getItem('UserToken');
     
-    console.log(distnceValue);
     console.log(lat);
     console.log(long);
     console.log(userLat);
-    console.log(userLon)
+    console.log(userLon);
+    console.log(distnceValue);
 
     const navigateToMap = () => {
         navigate('/chatpage');
@@ -42,32 +44,27 @@ const Otheruserprofile = () => {
             console.log(position.coords.latitude)
         })
     })
+    // console.log(distances);
 
-const distance = () => {
+const distance = (userLat,userLon) => {
    
    
-    var R = 6371;
-	var dLat = (lat-userLat) * Math.PI / 180;
-	var dLon = (long-userLon) * Math.PI / 180;
-	var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    const R = 6371;
+	const dLat = (lat-userLat) * Math.PI / 180;
+	const dLon = (long-userLon) * Math.PI / 180;
+	const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
 		Math.cos(userLat * Math.PI / 180 ) * Math.cos(lat * Math.PI / 180 ) *
 		Math.sin(dLon/2) * Math.sin(dLon/2);
-	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-	var d = R * c;
-    
-	if (d>1){ 
-        
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+	const d = R * c;
+    if (d>1){
         setDistanceValue(Math.round(d)+"km")
-        return Math.round(d)+"km";
-}
-	else if (d<=1) {
+        // distances = Math.round(d)+"km"
+        // return distances=Math.round(d)+"km";
+    }else if(d<=1){
         setDistanceValue(Math.round(d*1000)+"m")
-        return Math.round(d*1000)+"m"
-    };
-    
-    
-	// return d;
-    
+        //  return Math.round(d*1000)+"m";
+    }
 }
 
 
@@ -87,6 +84,7 @@ const distance = () => {
                 setUserSkill(data.skill);
                 setUserLat(data.location.Latitude);
                 setUserLon(data.location.Longitude);
+                distance(data.location.Latitude,data.location.Longitude)
             });
     }
     const chatroomdata = () =>{
@@ -106,7 +104,7 @@ const distance = () => {
     }
     useEffect(() => {
         getallUserData()
-        distance()
+       
 
     }, []);
     return(
