@@ -1,0 +1,51 @@
+{
+    "Model": {
+        "UserData": {
+            "Id": 8,
+            "FullName": "sweety patel",
+            "Email": "sweety@gmail.com"
+        },
+        "Locationdata": {
+            "Floor": "1",
+            "House_no": "205/A",
+            "Society_Name": "green eris colony",
+            "Latitude": "23.112659",
+            "Longitude": "72.547752",
+            "Country_id": 109,
+            "State_id": 2,
+            "City_id": 5,
+            "PostalCode": "302481"
+        },
+        "Ratedata": {
+            "Rate": "100",
+            "Hour": "1"
+        },
+        "skilldata": [
+            {
+                "Skill_Master_id": "10",
+                "skill": "Fluter"
+            },
+            {
+                "Skill_Master_id": "9",
+                "skill": "cooking"
+            }
+        ],
+        "oskilldata": [
+            {
+                "Skill_Master_id": "11",
+                "skill": "dancing"
+            },
+            {
+                "Skill_Master_id": "9",
+                "skill": "cooking"
+            }
+        ],
+        "DurationData": {
+            "Start_hour": "10:30 AM",
+            "End_hour": "01:30 PM"
+        },
+        "CurrencyData": {
+            "Currency_Master_Id": "1"
+        }
+    }
+}
