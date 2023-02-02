@@ -102,6 +102,9 @@
 .mainskill-inputheight-edit{
     height:46px;
 }
+.currency{
+    width: 110px;
+}
 .labelcity-input-edit{
     margin-left: -311px;
 }
@@ -276,11 +279,14 @@
     width: 80%;
     height: 120px;
     background: #023B54;
+    border-radius : 0 0 15px 15px ;
     display: block;
     margin-left: auto;
     margin-right: auto;
     padding: 10px;
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
 .hfive-bio-otheruser{
