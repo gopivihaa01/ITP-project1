@@ -6,6 +6,9 @@ import { Multiselect } from 'multiselect-react-dropdown'
 import { Avatar, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { Form, InputGroup } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
+import Geocode from "react-geocode";
+import { AddressAutofill } from '@mapbox/search-js-react';
+
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { json } from 'react-router-dom';
@@ -16,7 +19,7 @@ const Editprofile = () => {
     const [state, setState] = useState([]);
     const [city, setCity] = useState([]);
     const [currency, setCurrency] = useState([]);
-    const [file, setFile] = useState({});
+    const [file, setFile] = useState("");
     console.log(file)
     const UserToken = window.localStorage.getItem('UserToken');
     const userId = window.localStorage.getItem('UserID');
@@ -30,9 +33,15 @@ const Editprofile = () => {
     });
     // console.log(userData)
     const [locationData, setLocationData] = useState({
+        Floor: "",
+        House_no: "",
+        Society_Name: "",
         Country_id: userGetLocation.Country_id,
         State_id: userGetLocation.State_id,
-        City_id: ""
+        // Latitude : "",
+        // Longitude : "",
+        City_id: "",
+        PostalCode: ""
     });
     console.log(locationData)
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -65,18 +74,59 @@ const Editprofile = () => {
 
         }
     });
-    // console.log(putData);
-    const upDateData = () => {
-    //     let formData = new FormData();
-    //     formData.append("file", file);
-    //     const url = `http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
-    //     console.log(url);
-    //     fetch(url, {
-    //         method: 'POST',
-    //         headers: {'Content-Type':'application/json'},
-    //         body: {ProfilePicture: file}
-            
-    //     })
+    const getUserCoordinates = () => {
+        Geocode.fromAddress(`${locationData.Society_Name},${locationData.City_id}`).then(
+            (response) => {
+                console.log(response)
+                const { lat, lng } = response.results[0].geometry.location;
+                console.log(lat, lng);
+            }
+
+        );
+        // navigator.geolocation.getCurrentPosition((position) => {
+        //     console.log("Latitude is :", position.coords.latitude);
+        //     console.log("Longitude is :", position.coords.longitude);
+        // setLocationData({
+        //     Latitude : position.coords.latitude ,
+        //     Longitude : position.coords.longitude
+
+        // })
+        //   });
+    }
+
+
+
+    const upDateData = (e) => {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append("file", file);
+        const url = `http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
+        console.log(url);
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ProfilePicture: file })
+
+        }).then((response) => {
+            response.json()
+        }).then((result) => {
+            console.log(result)
+        })
+        const putUrl = `http://192.168.1.9/itp/api/values/AddEditUserDetails?token=${UserToken}`
+        fetch(putUrl, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                model: {
+                    UserData: userData,
+                    Locationdata: locationData,
+                    Ratedata: rateData,
+                    skilldata: skillData,
+                    DurationData: durationData,
+                    CurrencyData: currencyData
+                }
+            })
+        })
     }
 
     const showData = () => {
@@ -120,17 +170,8 @@ const Editprofile = () => {
                 setCurrencyData({
                     Currency_Master_Id: result.currency.Currency_name
                 })
-
-                // const usersdetails = new Array
-                // usersdetails.push(result)
-                // sessionStorage.setItem("users", JSON.stringify(usersdetails));
-                // console.log(usersdetails)
-                // sessionStorage.setItem("user",JSON.stringify(userdetails));
-
             })
-        }
-
-        )
+        })
     }
     //*************************************************************+++++++ On Change ++++++********************************************************* */
     const onChange =
@@ -179,10 +220,6 @@ const Editprofile = () => {
             }
         })
     }
-
-
-
-
     const handleSkillData = (e) => {
         setSkillData(e)
     }
@@ -193,7 +230,8 @@ const Editprofile = () => {
         getcountries()
         getcurrency()
         getSkillData()
-        upDateData()
+        // upDateData()
+        getUserCoordinates()
         showData();
     }, [userId]);
 
@@ -288,14 +326,14 @@ const Editprofile = () => {
     return (
         <div className='main-editprofile'>
             <div className='other-userprofile'>Edit Profile</div>
-            <Avatar id="avatar" className='avtar-editprofile-page' src={file}  />
+            <Avatar id="avatar" className='avtar-editprofile-page' src={file} />
             <div className='edit-camera-circle'>
                 <input type='file' id='file' ref={inputFile} style={{ display: 'none' }} onChange={handleChangeavtar} accept="*/*" />
                 <BsFillCameraFill onClick={onButtonClick} className='edit-camera' />
             </div>
             <Row className="justify-content-md-center ">
                 <Col sm={6} className="colSize">
-                    <form className='mainform.edit' onSubmit={onSubmitHandler}>
+                    <form className='mainform.edit' onSubmit={(e) => e.preventDefault()} >
                         <TextField id="outlined-basic" className="textfieldform-edit w-100" name='FullName' label="Full Name :" type="text"
                             value={userData.FullName} onChange={onChange} /><br />
                         <ToastContainer />
@@ -353,6 +391,24 @@ const Editprofile = () => {
                                 displayValue='skill' />
                         </FormControl>
 
+                        <FormControl fullWidth className='mainskill-input-edit'>
+                            <InputGroup size='large' >
+                                <TextField id="outlined-basic" className='mainskill-inputheight-edit Floor-edit'
+                                    value={locationData.Floor || ""} name='Floor' label="Floor" onChange={onChangeLocationData} type="number" />
+                                <TextField id="outlined-basic" className='mainskill-inputheight-edit houseno-edit'
+                                    value={locationData.House_no || ""} name='House_no' onChange={onChangeLocationData} label="HouseNo" type="text" />
+                            </InputGroup>
+                        </FormControl>
+
+                        <FormControl fullWidth className='mainskill-input-edit'>
+                            <InputGroup size='large' >
+                                <TextField id="outlined-basic" className='mainskill-inputheight-edit societyname-edit'
+                                    value={locationData.Society_Name || ""} name='Society_Name' onChange={onChangeLocationData} type="textarea" />
+                                <TextField id="outlined-basic" className='mainskill-inputheight-edit postalcode-edit'
+                                    onChange={onChangeLocationData} value={locationData.PostalCode} label="PostalCode" name="PostalCode" type="number" />
+                            </InputGroup>
+                        </FormControl>
+
                         <FormControl fullWidth className='mainskill-input-edit' size='small'>
                             <InputLabel id='demo-simple-select-outlined-label'>Country</InputLabel>
                             <Select
@@ -369,6 +425,7 @@ const Editprofile = () => {
                                 ))}
                             </Select>
                         </FormControl>
+
                         <FormControl fullWidth className='mainskill-input-edit'>
                             <InputLabel id='demo-simple-select-outlined-label'>State</InputLabel>
                             <Select
@@ -384,6 +441,7 @@ const Editprofile = () => {
                                 ))}
                             </Select>
                         </FormControl>
+
                         <FormControl fullWidth className='mainskill-input-edit'>
                             <InputLabel id='demo-simple-select-outlined-label'>City</InputLabel>
                             <Select
@@ -399,6 +457,7 @@ const Editprofile = () => {
                                 ))}
                             </Select>
                         </FormControl>
+
                         <FormControl fullWidth className='mainskill-input-edit'>
                             <InputLabel id='demo-simple-select-outlined-label'>Currency</InputLabel>
                             <InputGroup size='large'>
@@ -420,8 +479,7 @@ const Editprofile = () => {
                                 {/* <Form.Control     aria-label="Text input with 2 dropdown buttons" /> */}
                             </InputGroup>
                         </FormControl>
-                        <button className='submit-btn-edit' type="submit" onClick={upDateData()} value="Submit">Submit</button>
-
+                        <button className='submit-btn-edit' type="submit" onClick={upDateData} value="Submit">Submit</button>
                     </form>
                 </Col>
             </Row>

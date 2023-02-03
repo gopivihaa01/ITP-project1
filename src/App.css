@@ -105,6 +105,20 @@
 .currency{
     width: 110px;
 }
+.Floor-edit{
+    width: 130px;
+   height: auto;
+}
+.houseno-edit{
+    width: 71%;
+}
+.societyname-edit{
+    width: 65%;
+}
+.postalcode-edit{
+    width: 35%;
+    height: auto;
+}
 .labelcity-input-edit{
     margin-left: -311px;
 }
