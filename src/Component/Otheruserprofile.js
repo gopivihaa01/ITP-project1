@@ -1,16 +1,10 @@
-import {HiOutlineArrowRight}from 'react-icons/hi';
+import { HiOutlineArrowRight } from 'react-icons/hi';
 import locimg from "../assets/distanceimg.png";
 import { Chip, Typography } from "@mui/material";
 import { Col, Label, Row } from "reactstrap";
 import avtar from "../assets/puser.jpg";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-function getDistance ({}){
-
-}
-
-var distances;
 
 const Otheruserprofile = () => {
     const [userDetail, setUserDetail] = useState({});
@@ -24,10 +18,9 @@ const Otheruserprofile = () => {
     const [lat, setLat] = useState('');
     const [long, setLon] = useState('');
     const navigate = useNavigate();
-
     const loginUserId = localStorage.getItem('UserID');
     const userToken = localStorage.getItem('UserToken');
-    
+
     console.log(lat);
     console.log(long);
     console.log(userLat);
@@ -44,51 +37,41 @@ const Otheruserprofile = () => {
             console.log(position.coords.latitude)
         })
     })
-    // console.log(distances);
 
-const distance = (userLat,userLon) => {
-   
-   
-    const R = 6371;
-	const dLat = (lat-userLat) * Math.PI / 180;
-	const dLon = (long-userLon) * Math.PI / 180;
-	const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-		Math.cos(userLat * Math.PI / 180 ) * Math.cos(lat * Math.PI / 180 ) *
-		Math.sin(dLon/2) * Math.sin(dLon/2);
-	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-	const d = R * c;
-    if (d>1){
-        setDistanceValue(Math.round(d)+"km")
-        // distances = Math.round(d)+"km"
-        // return distances=Math.round(d)+"km";
-    }else if(d<=1){
-        setDistanceValue(Math.round(d*1000)+"m")
-        //  return Math.round(d*1000)+"m";
+    const distance = (userLat, userLon) => {
+        const R = 6371;
+        const dLat = (lat - userLat) * Math.PI / 180;
+        const dLon = (long - userLon) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(userLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = R * c;
+        if (d > 1) {
+            setDistanceValue(Math.round(d) + "km")
+        } else if (d <= 1) {
+            setDistanceValue(Math.round(d * 1000) + "m")
+        }
     }
-}
-
-
-
     const location = (window.location.pathname).split("/")
     // console.log(location[2]);
     const getallUserData = () => {
         fetch(`http://192.168.1.9/itp/api/values/freeUserDetails?User_id=${location[2]}`)
-
-            .then((response) => response.json())
-            .then(data => {
-                console.log(data)
-                setUserDetail(data.user);
-                setUserCurrency(data.currency)
-                setUserLocation(data.location)
-                setUserRate(data.rate)
-                setUserSkill(data.skill);
-                setUserLat(data.location.Latitude);
-                setUserLon(data.location.Longitude);
-                distance(data.location.Latitude,data.location.Longitude)
-            });
+        .then((response) => response.json())
+        .then(data => {
+            console.log(data)
+            setUserDetail(data.user);
+            setUserCurrency(data.currency)
+            setUserLocation(data.location)
+            setUserRate(data.rate)
+            setUserSkill(data.skill);
+            setUserLat(data.location.Latitude);
+            setUserLon(data.location.Longitude);
+            distance(data.location.Latitude, data.location.Longitude)
+        });
     }
-    const chatroomdata = () =>{
-        fetch(`http://192.168.1.9/itp/api/chat/createChat?token=${userToken}`,{
+    const chatroomdata = () => {
+        fetch(`http://192.168.1.9/itp/api/chat/createChat?token=${userToken}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -99,57 +82,63 @@ const distance = (userLat,userLon) => {
                 From_User: loginUserId,
                 To_User: userDetail.Id,
             })
+        }).then((resp) => {
+            resp.json().then((resp) => {
+                console.log("resp", resp)
+            })
+            // setFromUser(resp.Tousername)
+            // if(userDetail.Id === loginUserId){
+            //     console.log(resp.Tousername)
+            // }
         })
         
+        
+
     }
     useEffect(() => {
         getallUserData()
-       
-
     }, []);
-    return(
+    return (
         <div>
             <div className='other-userprofile'></div>
-            <img className='otheruser-avtar' src={avtar}/>
+            <img className='otheruser-avtar' src={avtar} />
             <h5 className="hfive-bio-otheruser">
-                
                 {userDetail.FullName}
             </h5>
             <Typography className="pbio-otheruser">
-                
                 {userCurrency.Currency} / {userRate.Rate} / {userRate.Hour} hr
-                </Typography>
+            </Typography>
             <Row>
                 <Col sm={{ offset: 1, order: 2, size: 5 }}>
-                <Label className='mainskill-header-otheruser'>Main Skill</Label><br />
-                {
-                    userSkill.map((t) => {
-                        return <Chip label={t.skill} className='mainskill-fst-otheruser'/>
-                    })
-                }<br /><br />
-               <Label className='mainskill-header-otheruser'>Other Skill</Label><br />
-                <Chip label="Jquery" className='otherskill-fst-otheruser'/>
-                <Chip label="React" className='otherskill-sec-otheruser'/>
-                <Chip label="Java" className='otherskill-sec-otheruser'/><br/><br />
-                <Label className='mainskill-header-otheruser'>Address*</Label><br />
-                <Label className='content-otheruser'>
-                    {userLocation.House_no}, {userLocation.Society_Name}, {userLocation.PostalCode}, {userLocation.City}, {userLocation.State}, {userLocation.Country}
-                </Label><br />
-                <Label className='mainskill-header-otheruser'>Email Address*</Label><br />
-                <Label  className='content-otheruser'>
-                    {userDetail.Email}
-                </Label><br />
-                <div className="maindiv-otheruser">
-                    <img src={locimg} />
-                    <h3 className='hthree-maindiv-otheruser'>{distnceValue}</h3>
-                    <button className='arrowicon-button' onClick={() => {
-                        chatroomdata();
-                        navigateToMap();
-                    }}>
-                        <HiOutlineArrowRight className="right-arrow-otheruser" /> 
-                    </button>
-                </div>
-                 
+                    <Label className='mainskill-header-otheruser'>Main Skill</Label><br />
+                    {
+                        userSkill.map((t) => {
+                            return <Chip label={t.skill} className='mainskill-fst-otheruser' />
+                        })
+                    }<br /><br />
+                    <Label className='mainskill-header-otheruser'>Other Skill</Label><br />
+                    <Chip label="Jquery" className='otherskill-fst-otheruser' />
+                    <Chip label="React" className='otherskill-sec-otheruser' />
+                    <Chip label="Java" className='otherskill-sec-otheruser' /><br /><br />
+                    <Label className='mainskill-header-otheruser'>Address*</Label><br />
+                    <Label className='content-otheruser'>
+                        {userLocation.House_no}, {userLocation.Society_Name}, {userLocation.PostalCode}, {userLocation.City}, {userLocation.State}, {userLocation.Country}
+                    </Label><br />
+                    <Label className='mainskill-header-otheruser'>Email Address*</Label><br />
+                    <Label className='content-otheruser'>
+                        {userDetail.Email}
+                    </Label><br />
+                    <div className="maindiv-otheruser">
+                        <img src={locimg} />
+                        <h3 className='hthree-maindiv-otheruser'>{distnceValue}</h3>
+                        <button className='arrowicon-button' onClick={() => {
+                            chatroomdata();
+                            navigateToMap();
+                        }}>
+                            <HiOutlineArrowRight className="right-arrow-otheruser" />
+                        </button>
+                    </div>
+
                 </Col>
             </Row>
         </div>

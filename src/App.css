@@ -28,7 +28,24 @@
     margin-right: auto;
     color: rgb(60 60 171);
 }
-.login-button{
+.maindiv-header{
+    float: right;
+    margin: 20px;
+}
+.login-button-header{
+    height: 36px;
+    width: 100px;
+    margin-right: 10px;
+    border-style: rgb(60 60 171);
+    background-color: rgb(60 60 171);
+    color: white;
+    border-style: none;
+}
+.menu-button-header{
+    background-color: white;
+    border: none;
+}
+/* .login-button{
     float: right;
     height: 36px;
     width: 145px;
@@ -37,13 +54,13 @@
     color: white;
     margin: 20px 98px;
     border-style: none;
-}
-.main-menubutton{
+} */
+/* .main-menubutton{
     float: right !important;
     background-color: white;
     border: none;
     margin: 16px -311px;
-}
+} */
 .editp-icon-menubtn{
     font-size: 15px;
     margin-top: -9px;
@@ -228,6 +245,7 @@
     margin-top: 20px;
     text-decoration: underline;
 }
+
 .otp-header{
     margin-top: 40px;
     text-align: center;
