@@ -21,6 +21,7 @@ import user from '../assets/puser.jpg';
 
 const ModalBasic = () => {
     const [basicModal, setBasicModal] = useState(false)
+    const [signupModal, setSignUpModal]= useState(false)
     const [active, setActive] = useState('1')
     const [loginphone, setLoginPhone] = useState('');
     const [loginpassword, setLoginPassword] = useState('');
@@ -38,7 +39,7 @@ const ModalBasic = () => {
     // const [loginButtonhide,setLoginButtonHide] = useState(true)
     const isLogin = window.localStorage.getItem('UserToken')
 
-
+console.log(otpNumber);
     useEffect(() => {
 
         if (isLogin !== null) {
@@ -78,19 +79,19 @@ const ModalBasic = () => {
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        // if (name.length === 0) {
-        //     toast.error("Enter the valid name", {
-        //         position: "bottom-right"
-        //     });
-        // } else if (phone.trim().length !== 10) {
-        //     toast.error("Enter the valid phone number", {
-        //         position: "bottom-right"
-        //     });
-        // } else if (password.length !== 4) {
-        //     toast.error("Enter the valid password", {
-        //         position: "bottom-right"
-        //     });
-        // }
+        if (name.length === 0) {
+            toast.error("Enter the valid name", {
+                position: "bottom-right"
+            });
+        } else if (phone.trim().length !== 10) {
+            toast.error("Enter the valid phone number", {
+                position: "bottom-right"
+            });
+        } else if (password.length !== 4) {
+            toast.error("Enter the valid password", {
+                position: "bottom-right"
+            });
+        }
     }
     function loginData() {
         fetch("http://192.168.1.9/itp/api/values/Login", {
@@ -145,62 +146,87 @@ useEffect(()=>{
     getUserData()
 },[isLogin])
     function saveData() {
-        fetch("http://192.168.1.9/itp/api/values/Register", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                FullName: name,
-                PhoneNumber: phone,
-                Password: password,
-                Lat: lat,
-                Long: long
+        if (name.length === 0) {
+            toast.error("Enter the valid name", {
+                position: "bottom-right"
+            });
+        } else if (phone.trim().length !== 10) {
+            toast.error("Enter the valid phone number", {
+                position: "bottom-right"
+            });
+        } else if (password.length !== 4) {
+            toast.error("Enter the valid password", {
+                position: "bottom-right"
+            });
+        } else {
+            fetch("http://192.168.1.9/itp/api/values/Register", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    FullName: name,
+                    PhoneNumber: phone,
+                    Password: password,
+                    Lat: lat,
+                    Long: long
+                })
+            }).then((resp) => {
+                resp.json().then((resp) => {
+                    console.log("resp", resp)
+                    localStorage.setItem("OTP", resp.otp)
+                    if(resp.Message === "User already exist"){
+                        toast.error("User already exist", {
+                        position: "bottom-right",
+                    });
+    
+                    }else if(resp.message === "success"){
+                        setOtp1(!otp1)
+                     }
+                    //bhavy
+                    // if (resp.message === "success") {
+                    //     setOtp1(!otp1)
+                    // } else {
+                    //     toast.error(resp.message)
+                    // }
+                    // setOtp(!otp)
+                    // if(resp !== "User already exist"){
+                    //     toast.success(`OPT: ${resp.otp}`)
+                    // } else {
+                    //     toast.error(resp)
+                    // }
+    
+                })
             })
-        }).then((resp) => {
-            resp.json().then((resp) => {
-                console.log("resp", resp)
-                // if(resp.Message === "User already exist"){
-                //     toast.error("User already exist", {
-                //     position: "bottom-right",
-                // });
+        }
 
-                // }else if(resp.message === "success"){
-                //     setOtp1(!otp1)
-                //  }
-                //bhavy
-                if (resp.message === "success") {
-                    setOtp1(!otp1)
-                } else {
-                    toast.error(resp.message)
-                }
-                // setOtp(!otp)
-                // if(result !== "User already exist"){
-                //     toast.success(`OPT: ${result.otp}`)
-                // } else {
-                //     toast.error(result)
-                // }
-
-            })
-        })
     }
     const otpData = () => {
         setShowData(true)
-        const url = "http://192.168.1.16/itp/api/values/Otp";
-        fetch(url)
-            .then((response) => response.json())
-            .then((json) => {
+        // if (otpNumber == localStorage.getItem('OTP')) {
+        //     toast.error("Invalide OTP Number")
+        // } else {
+        const url = `http://192.168.1.9/itp/api/values/Otp?otp=${otpNumber}` 
 
-                setData(json["results"])
-                console.log(json);
-                if (json === "Successfully register") {
-                    setBasicModal(false);
-                }
+        fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+    
+        setData(json["results"])
+            console.log(json);
+            // if (json === "Successfully register") {
+            //     setBasicModal(false);
+            // }
+            if(otpNumber === 0){
+                toast.error("not valid")
+            }
             })
             .catch((error) => console.log(error));
+             
     }
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
             setLat(position.coords.latitude)
@@ -215,20 +241,24 @@ useEffect(()=>{
                 <nav className='main-header'>
                     <img className='logo-main' src={itp} alt="logoimage" />
                     {/* <a href='/'><BsFilter className='filter-icon' /></a> */}
-                    <button className='login-button' onClick={() => setBasicModal(!basicModal)}>Login / Signup</button>
+                <div className='maindiv-header'>
+                    <button className='login-button-header' onClick={() => setBasicModal(!basicModal)}>Login</button>
+                    <button className='login-button-header' onClick={() => setSignUpModal(!signupModal)}>Sign up</button>
 
                     {menuItemActive &&
-                        <Menu>
-                            <MenuButton className="main-menubutton">
-                                <img className='menubar-avtar' src={user} />
-                            </MenuButton>
-                            <MenuList>
-                                <MenuItem onClick={navigateToEdit}><FaUserEdit className='editp-icon-menubtn' /> Edit</MenuItem>
-                                <MenuItem onClick={navigateToChat}><BsFillChatDotsFill className='chat-icon-menubtn' /> Chat</MenuItem>
-                                <MenuItem onSelect={() => alert("Mark as Draft")}><TbSettings className='setting-icon-menubtn' /> Setting</MenuItem>
-                                <MenuItem onSelect={() => alert("Mark as Draft")}><BiLogOut className='setting-icon-menubtn' /> Log out</MenuItem>
-                            </MenuList>
-                        </Menu>}
+                    <Menu>
+                        <MenuButton className="menu-button-header">
+                            <img className='menubar-avtar' src={user} />
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem onClick={navigateToEdit}><FaUserEdit className='editp-icon-menubtn' /> Edit</MenuItem>
+                            <MenuItem onClick={navigateToChat}><BsFillChatDotsFill className='chat-icon-menubtn' /> Chat</MenuItem>
+                            <MenuItem onSelect={() => alert("Mark as Draft")}><TbSettings className='setting-icon-menubtn' /> Setting</MenuItem>
+                            <MenuItem onSelect={() => alert("Mark as Draft")}><BiLogOut className='setting-icon-menubtn' /> Log out</MenuItem>
+                        </MenuList>
+                    </Menu>}
+                </div>
+                    
                 </nav>
 
             </div>
@@ -237,7 +267,52 @@ useEffect(()=>{
                     <Modal isOpen={basicModal} toggle={() => setBasicModal(!basicModal)}>
                         <h5 className="hfive-header-modal">Login To My Account <img className='img-header-modal' src='image/dot.png' alt="dotimage" /></h5>
                         <ModalBody>
-                            <Nav tabs>
+                        <p className='login-header'>Login</p>
+                        <form>
+                            <TextField className='phone-input' id="outlined-basic" label="Phone" type="number" value={loginphone} onChange={(e) => setLoginPhone(e.target.value)} /><br /><br /><br />
+                            <ToastContainer />
+                            <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={loginpassword} onChange={(e) => setLoginPassword(e.target.value)} /><br /><br /><br />
+                            <ToastContainer />
+                            <Button type='submit' className='modal-login-button' onClick={loginData}>Login</Button><br />
+                            <button color='primary' className="signup-login-button" onClick={() => {
+                                setBasicModal(!basicModal)
+                                setSignUpModal(!signupModal)
+
+                            }}>Already me?Signup</button>
+                        </form>
+                        </ModalBody>
+                    </Modal>
+                    <Modal isOpen={signupModal} toggle={() => setSignUpModal(!signupModal)}>
+                        <h5 className="hfive-header-modal">Sign Up To My Account <img className='img-header-modal' src='image/dot.png' alt="dotimage" /></h5>
+                        <ModalBody>
+                            {otp1 !== true ? <p className='login-header'>Signup</p> : <></>}
+                            {otp1 !== true ? <>
+                                <TextField className='phone-input' id="outlined-basic" label="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} /><br /><br /><br />
+                                <ToastContainer />
+                                <TextField className='phone-input' id="outlined-basic" label="Phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} /><br /><br /><br />
+                                <ToastContainer />
+                                <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /><br /><br />
+                                <ToastContainer />
+                                <Button type='submit' className='modal-login-button' onClick={saveData}>Signup</Button><br />
+                                <button color='primary' className="signup-login-button" onClick={() => { toggle('1') }}>Are you never member?Login</button>
+                            </> : <></>}
+                            {otp1 && <div>
+                                <h3 className="otp-header">Verification</h3>
+                                <p className="otp-enterp">Enter your OTP number</p>
+                                <OTPInput className="otp-data"
+                                    value={otpNumber}
+                                    onChange={setOtpNumber}
+                                    autoFocus
+                                    OTPLength={4}
+                                    otpType="number"
+                                    disabled={false}
+                                    secure
+                                />
+                            <button className="otp-verify-btn" onClick={otpData} type="subit">Submit</button>
+                            </div>}
+                        </ModalBody>
+                    </Modal>
+                            {/* <Nav tabs>
                                 <NavItem>
                                     <NavLink style={{ cursor: "pointer" }}
                                         active={active === '1'}
@@ -258,12 +333,12 @@ useEffect(()=>{
                                         Signup
                                     </NavLink>
                                 </NavItem>
-                            </Nav>
+                            </Nav> */}
 
-                            <TabContent className='py-50' activeTab={active}>
-                                <TabPane tabId='1'>
+                            {/* <TabContent className='py-50' activeTab={active}> */}
+                                {/* <TabPane tabId='1'>
                                     <p className='login-header'>Login</p>
-                                    <form onSubmit={onSubmitHandler}>
+                                    <form>
                                         <TextField className='phone-input' id="outlined-basic" label="Phone" type="number" value={loginphone} onChange={(e) => setLoginPhone(e.target.value)} /><br /><br /><br />
                                         <ToastContainer />
                                         <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={loginpassword} onChange={(e) => setLoginPassword(e.target.value)} /><br /><br /><br />
@@ -271,23 +346,22 @@ useEffect(()=>{
                                         <Button type='submit' className='modal-login-button' onClick={loginData}>Login</Button><br />
                                         <button color='primary' className="signup-login-button" onClick={() => { toggle('2') }}>Already me?Signup</button>
                                     </form>
-                                </TabPane>
-                                <TabPane tabId='2'>
+                                </TabPane> */}
+                                {/* <TabPane tabId='2'>
                                     {otp1 !== true ? <p className='login-header'>Signup</p> : <></>}
-                                    {otp1 !== true ? <form onSubmit={onSubmitHandler}>
+                                    {otp1 !== true ? <>
                                         <TextField className='phone-input' id="outlined-basic" label="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} /><br /><br /><br />
                                         <ToastContainer />
                                         <TextField className='phone-input' id="outlined-basic" label="Phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} /><br /><br /><br />
                                         <ToastContainer />
                                         <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /><br /><br />
                                         <ToastContainer />
-                                        <Button type='submit' className='modal-login-button' onClick={saveData}
-                                        // onClick={()=>setOtp(!otp)}
-                                        >Signup</Button><br />
-                                        {/* <ToastContainer /> */}
+                                        <Button type='submit' className='modal-login-button' onClick={saveData} */}
+                                        {/* // onClick={()=>setOtp(!otp)} */}
+                                        {/* >Signup</Button><br />
                                         <button color='primary' className="signup-login-button" onClick={() => { toggle('1') }}>Are you never member?Login</button>
-                                    </form> : <></>}
-                                    {otp1 && <div>
+                                    </> : <></>} */}
+                                    {/* {otp1 && <div>
                                         <h3 className="otp-header">Verification</h3>
                                         <p className="otp-enterp">Enter your OTP number</p>
                                         <OTPInput className="otp-data"
@@ -298,17 +372,13 @@ useEffect(()=>{
                                             otpType="number"
                                             disabled={false}
                                             secure
-                                        />
-                                        <ResendOTP className="otp-second-content" handelResendClick={() => console.log("Resend clicked")} />
-                                        <button className="otp-verify-btn" onClick={otpData} type="subit">Submit</button>
-                                    </div>}
+                                        /> */}
+                                        {/* <ResendOTP className="otp-second-content" handelResendClick={() => console.log("Resend clicked")} /> */}
+                                        {/* <button className="otp-verify-btn" onClick={otpData} type="subit">Submit</button> */}
+                                    {/* </div>}
                                 </TabPane>
 
-                            </TabContent>
-                        </ModalBody>
-                        <ModalFooter>
-                        </ModalFooter>
-                    </Modal>
+                            </TabContent> */}
                 </div>
             </div>
         </>
