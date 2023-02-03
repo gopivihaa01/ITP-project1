@@ -34,21 +34,21 @@ const ModalBasic = () => {
     const [lat, setLat] = useState('');
     const [long, setLon] = useState('');
     const navigate = useNavigate();
-    const [menuItemActive,setMenuItemActive] = useState(false)
+    const [menuItemActive, setMenuItemActive] = useState(false)
     // const [loginButtonhide,setLoginButtonHide] = useState(true)
     const isLogin = window.localStorage.getItem('UserToken')
-    
-    
-useEffect(()=>{
 
-    if(isLogin !== null){
-        setMenuItemActive(true);
-    }else{
-        setMenuItemActive(false); 
-    }
-},[isLogin])  
 
-    const navigateToEdit = () => { 
+    useEffect(() => {
+
+        if (isLogin !== null) {
+            setMenuItemActive(true);
+        } else {
+            setMenuItemActive(false);
+        }
+    }, [isLogin])
+
+    const navigateToEdit = () => {
         const ID = window.localStorage.getItem('UserID')
         navigate(`/edit?id=${ID}`);
     };
@@ -60,21 +60,21 @@ useEffect(()=>{
             setActive(tab)
         }
     }
-        // e.preventDefault();
-        // const user = { loginphone, loginpassword };
-        // const result = fetch("http://192.168.1.9/itp/api/values/Login", user);
-        // setUser(result.data)
-        // // localStorage.setItem('user', result.data)
-        // console.log(result.data)
-        // if(loginphone.trim().length !== 10) {
-        //     toast.error("Enter the valid phone number", {
-        //         position: "bottom-right"
-        //     });
-        // }else if (loginpassword.length !== 4) {
-        //     toast.error("Enter the valid password", {
-        //         position: "bottom-right"
-        //     });
-        // }
+    // e.preventDefault();
+    // const user = { loginphone, loginpassword };
+    // const result = fetch("http://192.168.1.9/itp/api/values/Login", user);
+    // setUser(result.data)
+    // // localStorage.setItem('user', result.data)
+    // console.log(result.data)
+    // if(loginphone.trim().length !== 10) {
+    //     toast.error("Enter the valid phone number", {
+    //         position: "bottom-right"
+    //     });
+    // }else if (loginpassword.length !== 4) {
+    //     toast.error("Enter the valid password", {
+    //         position: "bottom-right"
+    //     });
+    // }
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
@@ -120,11 +120,30 @@ useEffect(()=>{
                         position: "bottom-right"
                     });
                 }
+
+            })
+        })
+   
+    }
+    const getUserData=()=>{
+
+        const userToken = window.localStorage.getItem('UserToken');
+        const userId = window.localStorage.getItem('UserID');
+        console.log(userId)
+        fetch(`http://192.168.1.9/itp/api/values/UserDetails?User_id=${userId}&token=${userToken}`, {
+            method: "GET",
+        }).then((response) => {
+            response.json().then((result) => {
                 
+                const usersdetails = new Array
+                usersdetails.push(result)
+                sessionStorage.setItem("users", JSON.stringify(usersdetails));
             })
         })
     }
-  
+useEffect(()=>{
+    getUserData()
+},[isLogin])
     function saveData() {
         fetch("http://192.168.1.9/itp/api/values/Register", {
             method: "POST",
@@ -196,20 +215,20 @@ useEffect(()=>{
                 <nav className='main-header'>
                     <img className='logo-main' src={itp} alt="logoimage" />
                     {/* <a href='/'><BsFilter className='filter-icon' /></a> */}
-                        <button className='login-button' onClick={() => setBasicModal(!basicModal)}>Login / Signup</button>
+                    <button className='login-button' onClick={() => setBasicModal(!basicModal)}>Login / Signup</button>
 
-                    {menuItemActive&&
-                    <Menu>
-                        <MenuButton className="main-menubutton">
-                            <img className='menubar-avtar' src={user} />
-                        </MenuButton>
-                         <MenuList>
-                            <MenuItem onClick={navigateToEdit}><FaUserEdit className='editp-icon-menubtn' /> Edit</MenuItem>
-                            <MenuItem onClick={navigateToChat}><BsFillChatDotsFill className='chat-icon-menubtn' /> Chat</MenuItem>
-                            <MenuItem onSelect={() => alert("Mark as Draft")}><TbSettings className='setting-icon-menubtn' /> Setting</MenuItem>
-                            <MenuItem onSelect={() => alert("Mark as Draft")}><BiLogOut className='setting-icon-menubtn' /> Log out</MenuItem>
-                        </MenuList>
-                    </Menu>}
+                    {menuItemActive &&
+                        <Menu>
+                            <MenuButton className="main-menubutton">
+                                <img className='menubar-avtar' src={user} />
+                            </MenuButton>
+                            <MenuList>
+                                <MenuItem onClick={navigateToEdit}><FaUserEdit className='editp-icon-menubtn' /> Edit</MenuItem>
+                                <MenuItem onClick={navigateToChat}><BsFillChatDotsFill className='chat-icon-menubtn' /> Chat</MenuItem>
+                                <MenuItem onSelect={() => alert("Mark as Draft")}><TbSettings className='setting-icon-menubtn' /> Setting</MenuItem>
+                                <MenuItem onSelect={() => alert("Mark as Draft")}><BiLogOut className='setting-icon-menubtn' /> Log out</MenuItem>
+                            </MenuList>
+                        </Menu>}
                 </nav>
 
             </div>

@@ -8,6 +8,7 @@ import { Form, InputGroup } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { json } from 'react-router-dom';
 
 const Editprofile = () => {
     const [skills, setSkill] = useState([]);
@@ -15,24 +16,25 @@ const Editprofile = () => {
     const [state, setState] = useState([]);
     const [city, setCity] = useState([]);
     const [currency, setCurrency] = useState([]);
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState({});
+    console.log(file)
     const UserToken = window.localStorage.getItem('UserToken');
     const userId = window.localStorage.getItem('UserID');
     const userDetails = JSON.parse(window.sessionStorage.getItem("users"))
     const userGetLocation = userDetails[0].location
     const userGetCurrency = userDetails[0].currency
-    console.log(file)
     const [userData, setUserData] = useState({
         Id: "",
         FullName: "",
         Email: ""
     });
-    console.log(userData)
+    // console.log(userData)
     const [locationData, setLocationData] = useState({
         Country_id: userGetLocation.Country_id,
         State_id: userGetLocation.State_id,
         City_id: ""
     });
+    console.log(locationData)
     const [phoneNumber, setPhoneNumber] = useState("");
     const [rateData, setRate] = useState({
         Hour: '',
@@ -64,25 +66,17 @@ const Editprofile = () => {
         }
     });
     // console.log(putData);
-    const uploadavtarData = () => {
-        let formData = new FormData();
-        console.log(file)
-        formData.append("file", file);
-        console.log(formData)
-        const url = `http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
-        console.log(url);
-        fetch(url, {
-            method: 'POST',
-            headers: {'Content-Type':'multipart/form-data; boundary=<calculated when request is sent>','Accept':'*/*'},
-            body: {
-                ProfilePicture: file
-            }
-        }).then((response) =>
-            response.Json()
-        ).then((data)=>{
-            // setFile(data)
-            console.log(data)
-        })
+    const upDateData = () => {
+    //     let formData = new FormData();
+    //     formData.append("file", file);
+    //     const url = `http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
+    //     console.log(url);
+    //     fetch(url, {
+    //         method: 'POST',
+    //         headers: {'Content-Type':'application/json'},
+    //         body: {ProfilePicture: file}
+            
+    //     })
     }
 
     const showData = () => {
@@ -127,9 +121,9 @@ const Editprofile = () => {
                     Currency_Master_Id: result.currency.Currency_name
                 })
 
-                const usersdetails = new Array
-                usersdetails.push(result)
-                sessionStorage.setItem("users", JSON.stringify(usersdetails));
+                // const usersdetails = new Array
+                // usersdetails.push(result)
+                // sessionStorage.setItem("users", JSON.stringify(usersdetails));
                 // console.log(usersdetails)
                 // sessionStorage.setItem("user",JSON.stringify(userdetails));
 
@@ -199,7 +193,7 @@ const Editprofile = () => {
         getcountries()
         getcurrency()
         getSkillData()
-        uploadavtarData()
+        upDateData()
         showData();
     }, [userId]);
 
@@ -294,9 +288,9 @@ const Editprofile = () => {
     return (
         <div className='main-editprofile'>
             <div className='other-userprofile'>Edit Profile</div>
-            <Avatar id="avatar" className='avtar-editprofile-page' src={file} />
+            <Avatar id="avatar" className='avtar-editprofile-page' src={file}  />
             <div className='edit-camera-circle'>
-                <input type='file' id='file' ref={inputFile} style={{ display: 'none' }} onChange={handleChangeavtar} accept="image/*" />
+                <input type='file' id='file' ref={inputFile} style={{ display: 'none' }} onChange={handleChangeavtar} accept="*/*" />
                 <BsFillCameraFill onClick={onButtonClick} className='edit-camera' />
             </div>
             <Row className="justify-content-md-center ">
@@ -426,7 +420,7 @@ const Editprofile = () => {
                                 {/* <Form.Control     aria-label="Text input with 2 dropdown buttons" /> */}
                             </InputGroup>
                         </FormControl>
-                        <button className='submit-btn-edit' type="submit" onClick={uploadavtarData()} value="Submit">Submit</button>
+                        <button className='submit-btn-edit' type="submit" onClick={upDateData()} value="Submit">Submit</button>
 
                     </form>
                 </Col>
