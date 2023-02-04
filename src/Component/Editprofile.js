@@ -7,8 +7,6 @@ import { Avatar, FormControl, InputLabel, MenuItem, Select } from '@mui/material
 import { Form, InputGroup } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import Geocode from "react-geocode";
-import { AddressAutofill } from '@mapbox/search-js-react';
-
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { json } from 'react-router-dom';
@@ -74,8 +72,9 @@ const Editprofile = () => {
 
         }
     });
+    Geocode.setApiKey("AIzaSyC1t9XVQUGSxr9Vdn2catWhv4gQJ5AwjL4")
     const getUserCoordinates = () => {
-        Geocode.fromAddress(`${locationData.Society_Name},${locationData.City_id}`).then(
+        Geocode.fromAddress("Eiffel Tower").then(
             (response) => {
                 console.log(response)
                 const { lat, lng } = response.results[0].geometry.location;
