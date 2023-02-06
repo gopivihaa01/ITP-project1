@@ -7,6 +7,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { GoSearch } from 'react-icons/go';
 import avtar from "../assets/puser.jpg";
 import { useEffect, useState } from "react";
+import { API_URL } from '../confing';
 
 
 const Chat = () => {
@@ -25,7 +26,7 @@ const Chat = () => {
     const loginUserId = localStorage.getItem('UserID');
     const userToken = localStorage.getItem('UserToken');
     const getuserchatData = () => {
-        fetch(`http://192.168.1.9/itp/api/chat/userChatList?id=${loginUserId}&token=${userToken}`)
+        fetch(`${API_URL}/api/chat/userChatList?id=${loginUserId}&token=${userToken}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)

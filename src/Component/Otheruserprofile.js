@@ -5,6 +5,7 @@ import { Col, Label, Row } from "reactstrap";
 import avtar from "../assets/puser.jpg";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../confing';
 
 const Otheruserprofile = () => {
     const [userDetail, setUserDetail] = useState({});
@@ -56,7 +57,7 @@ const Otheruserprofile = () => {
     const location = (window.location.pathname).split("/")
     // console.log(location[2]);
     const getallUserData = () => {
-        fetch(`http://192.168.1.9/itp/api/values/freeUserDetails?User_id=${location[2]}`)
+        fetch(`${API_URL}/api/values/freeUserDetails?User_id=${location[2]}`)
         .then((response) => response.json())
         .then(data => {
             console.log(data)
@@ -71,7 +72,7 @@ const Otheruserprofile = () => {
         });
     }
     const chatroomdata = () => {
-        fetch(`http://192.168.1.9/itp/api/chat/createChat?token=${userToken}`, {
+        fetch(`${API_URL}/api/chat/createChat?token=${userToken}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

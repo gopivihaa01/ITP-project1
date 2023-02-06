@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 // import { BiErrorCircle } from 'react-icons/bi';
 // import { BsFilter } from 'react-icons/bs';
-import { Button, Modal, ModalBody, ModalFooter, TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, TabContent, TabPane, Nav, NavItem, NavLink, ModalHeader } from 'reactstrap';
 import OTPInput, { ResendOTP } from "otp-input-react";
 import { Menu, MenuList, MenuButton, MenuItem, } from "@reach/menu-button";
 import "@reach/menu-button/styles.css";
@@ -20,7 +20,7 @@ import { API_URL } from '../confing';
 
 
 const ModalBasic = () => {
-    const [basicModal, setBasicModal] = useState(false)
+    const [loginModal, setLoginModal] = useState(false)
     const [signupModal, setSignUpModal]= useState(false)
     const [active, setActive] = useState('1')
     const [loginphone, setLoginPhone] = useState('');
@@ -40,7 +40,7 @@ const ModalBasic = () => {
     const isLogin = window.localStorage.getItem('UserToken')
 
 
-console.log(otpNumber);
+    console.log(otpNumber);
     useEffect(() => {
 
         if (isLogin !== null) {
@@ -112,6 +112,7 @@ console.log(otpNumber);
         })
    
     }
+    
     const getUserData=()=>{
 
         const userToken = window.localStorage.getItem('UserToken');
@@ -145,7 +146,7 @@ useEffect(()=>{
                 position: "bottom-right"
             });
         } else {
-            fetch("http://44f5-103-240-204-253.in.ngrok.io/api/values/Register", {
+            fetch(`${API_URL}/api/values/Register`, {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json',
@@ -203,7 +204,7 @@ useEffect(()=>{
         setData(json["results"])
             console.log(json);
             if (json.message === "valid otp") {
-                setBasicModal(false);
+                setLoginModal(false);
             }
             // if(otpNumber === 0){
             //     toast.error("not valid")
@@ -228,7 +229,7 @@ useEffect(()=>{
                     <img className='logo-main' src={itp} alt="logoimage" />
                     {/* <a href='/'><BsFilter className='filter-icon' /></a> */}
                 <div className='maindiv-header'>
-                    <button className='login-button-header' onClick={() => setBasicModal(!basicModal)}>Login</button>
+                    <button className='login-button-header' onClick={() => setLoginModal(!loginModal)}>Login</button>
                     <button className='login-button-header' onClick={() => setSignUpModal(!signupModal)}>Sign up</button>
 
                     {menuItemActive &&
@@ -250,7 +251,7 @@ useEffect(()=>{
             </div>
             <div className='demo-inline-spacing'>
                 <div className='basic-modal'>
-                    <Modal isOpen={basicModal} toggle={() => setBasicModal(!basicModal)}>
+                    <Modal isOpen={loginModal} toggle={() => setLoginModal(!setLoginModal)}>
                         <h5 className="hfive-header-modal">Login To My Account <img className='img-header-modal' src='image/dot.png' alt="dotimage" /></h5>
                         <ModalBody>
                         <p className='login-header'>Login</p>
@@ -260,16 +261,11 @@ useEffect(()=>{
                             <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={loginpassword} onChange={(e) => setLoginPassword(e.target.value)} /><br /><br /><br />
                             <ToastContainer />
                             <Button type='submit' className='modal-login-button' onClick={loginData} >Login</Button><br />
-                            <button color='primary' className="signup-login-button" onClick={
-                                () => {
-                                setBasicModal(!basicModal)
-                                setSignUpModal(true)
-                                }}
-                            >Already me?Signup</button>
+                            <button color='primary' className="signup-login-button">Already me?Signup</button>
                         </form>
                         </ModalBody>
                     </Modal>
-                    <Modal isOpen={signupModal} toggle={() => setSignUpModal(!signupModal)}>
+                    {/* <Modal isOpen={signupModal} toggle={() => setSignUpModal(!signupModal)}>
                         <h5 className="hfive-header-modal">Sign Up To My Account <img className='img-header-modal' src='image/dot.png' alt="dotimage" /></h5>
                         <ModalBody>
                             {otp1 !== true ? <p className='login-header'>Signup</p> : <></>}
@@ -298,7 +294,7 @@ useEffect(()=>{
                             <button className="otp-verify-btn" onClick={otpData} type="subit">Submit</button>
                             </div>}
                         </ModalBody>
-                    </Modal>
+                    </Modal> */}
                             {/* <Nav tabs>
                                 <NavItem>
                                     <NavLink style={{ cursor: "pointer" }}

@@ -2,6 +2,7 @@
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import { Component, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+// import { API_URL } from '../confing';
 
 
 const Mpapplication = (props) => {
@@ -17,7 +18,7 @@ const Mpapplication = (props) => {
   const icon = { url: require("../assets/pin.png"), scaledSize: { width: 35, height: 42 } };
   const apiKey = "AIzaSyC1t9XVQUGSxr9Vdn2catWhv4gQJ5AwjL4";
   const getmaplData = () => {
-    fetch("http://192.168.1.9/itp/api/values/Location")
+    fetch("https://5931-103-240-204-253.in.ngrok.io/api/values/Location")
       .then((resp) => {
       resp.json().then((result) => {
         console.log("result", result.Userlist)
