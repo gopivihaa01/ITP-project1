@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BsFillCameraFill } from 'react-icons/bs';
 import TextField from '@mui/material/TextField';
 import { Col, Row } from 'reactstrap';
@@ -72,7 +72,7 @@ const Editprofile = () => {
 
         }
     });
-    Geocode.setApiKey("AIzaSyC1t9XVQUGSxr9Vdn2catWhv4gQJ5AwjL4")
+    Geocode.setApiKey("AIzaSyD5MAMEY7rUDHUcp0hrfjFwQYF3OzudUQk")
     const getUserCoordinates = () => {
         Geocode.fromAddress("Eiffel Tower").then(
             (response) => {
@@ -173,17 +173,17 @@ const Editprofile = () => {
         })
     }
     //*************************************************************+++++++ On Change ++++++********************************************************* */
-    const onChange =
-        (e) => {
-            const { name, value } = e.target;
-            setUserData(() => {
-                return {
-                    ...userData,
-                    [name]: value
-                }
-            })
-        }
-    const onChangeLocationData = (e) => {
+    const onChangeUserData = useCallback((e) => {
+        const { name, value } = e.target;
+        setUserData(() => {
+            return {
+                ...userData,
+                [name]: value
+            }
+        })
+    }, [userData])
+
+    const onChangeLocationData = useCallback((e) => {
         const { name, value } = e.target;
         setLocationData(() => {
             return {
@@ -191,8 +191,9 @@ const Editprofile = () => {
                 [name]: value
             }
         })
-    }
-    const onChangeRateData = (e) => {
+    }, [locationData])
+
+    const onChangeRateData = useCallback((e) => {
         const { name, value } = e.target;
         setRate(() => {
             return {
@@ -200,17 +201,19 @@ const Editprofile = () => {
                 [name]: value
             }
         })
-    }
-    const onChangeDurationData = (e) => {
+    }, [rateData])
+
+    const onChangeDurationData = useCallback((e) => {
         const { name, value } = e.target;
-        setDurationData((prevstate) => {
+        setDurationData(() => {
             return {
-                ...prevstate,
+                ...durationData,
                 [name]: value
             }
         })
-    }
-    const onChangeCurrencyData = (e) => {
+    }, [durationData])
+
+    const onChangeCurrencyData = useCallback((e) => {
         const { name, value } = e.target;
         setCurrencyData(() => {
             return {
@@ -218,10 +221,10 @@ const Editprofile = () => {
                 [name]: value
             }
         })
-    }
-    const handleSkillData = (e) => {
+    }, [currencyData])
+    const handleSkillData = useCallback((e) => {
         setSkillData(e)
-    }
+    }, [skillData])
 
     //************************+++++ BIND DATA++++***************************
 
@@ -263,20 +266,22 @@ const Editprofile = () => {
                 setCountries(data)
             });
     }
-    const getstateData = () => {
+    const getstateData = useCallback(() => {
         fetch(`http://192.168.1.9/itp/api/values/BindState?Country_id=${locationData.Country_id}`)
             .then((response) => response.json())
             .then(data => {
                 setState(data);
             });
-    }
-    const getcityData = () => {
+    },[locationData.Country_id])
+
+    const getcityData = useCallback(() => {
         fetch(`http://192.168.1.9/itp/api/values/BindCity?State_id=${locationData.State_id}`)
             .then((response) => response.json())
             .then(data => {
                 setCity(data);
             });
-    }
+    },locationData.State_id)
+    
     const getcurrency = () => {
         fetch(`http://192.168.1.9/itp/api/values/BindCurrency`)
             .then((response) => response.json())
@@ -334,12 +339,12 @@ const Editprofile = () => {
                 <Col sm={6} className="colSize">
                     <form className='mainform.edit' onSubmit={(e) => e.preventDefault()} >
                         <TextField id="outlined-basic" className="textfieldform-edit w-100" name='FullName' label="Full Name :" type="text"
-                            value={userData.FullName} onChange={onChange} /><br />
+                            value={userData.FullName} onChange={onChangeUserData} /><br />
                         <ToastContainer />
                         <TextField id="outlined-basic" className="textfieldform-edit w-100" label="Mobile Number :" type="text"
                             value={phoneNumber} disabled /><br />
                         <ToastContainer />
-                        <TextField id="outlined-basic" className='w-100 textfieldform-edit' label="Email Address :" name='Email' type="text" value={userData.Email} onChange={onChange} /><br />
+                        <TextField id="outlined-basic" className='w-100 textfieldform-edit' label="Email Address :" name='Email' type="text" value={userData.Email} onChange={onChangeUserData} /><br />
 
                         <TextField id="outlined-basic" onChange={onChangeRateData} name='Hour' value={rateData.Hour} className="textfieldform-edit w-100" label="Availabel hour :" type="text" /><br />
                         <ToastContainer />
