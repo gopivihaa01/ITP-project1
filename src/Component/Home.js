@@ -16,7 +16,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import itp from '../assets/ITP.svg';
 import user from '../assets/puser.jpg';
-// import axios from "axios"
 
 
 const ModalBasic = () => {
@@ -38,6 +37,13 @@ const ModalBasic = () => {
     const [menuItemActive, setMenuItemActive] = useState(false)
     // const [loginButtonhide,setLoginButtonHide] = useState(true)
     const isLogin = window.localStorage.getItem('UserToken')
+      const handleShow = () => {
+        setBasicModal(true);
+      };
+      const handleShow2 = () => {
+        setSignUpModal(true);
+        setSignUpModal(false);
+      };
 
 console.log(otpNumber);
     useEffect(() => {
@@ -61,22 +67,6 @@ console.log(otpNumber);
             setActive(tab)
         }
     }
-    // e.preventDefault();
-    // const user = { loginphone, loginpassword };
-    // const result = fetch("http://192.168.1.9/itp/api/values/Login", user);
-    // setUser(result.data)
-    // // localStorage.setItem('user', result.data)
-    // console.log(result.data)
-    // if(loginphone.trim().length !== 10) {
-    //     toast.error("Enter the valid phone number", {
-    //         position: "bottom-right"
-    //     });
-    // }else if (loginpassword.length !== 4) {
-    //     toast.error("Enter the valid password", {
-    //         position: "bottom-right"
-    //     });
-    // }
-
     const onSubmitHandler = (e) => {
         e.preventDefault();
         if (name.length === 0) {
@@ -94,7 +84,7 @@ console.log(otpNumber);
         }
     }
     function loginData() {
-        fetch("http://192.168.1.9/itp/api/values/Login", {
+        fetch("http://44f5-103-240-204-253.in.ngrok.io/api/values/Login", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -159,7 +149,7 @@ useEffect(()=>{
                 position: "bottom-right"
             });
         } else {
-            fetch("http://192.168.1.9/itp/api/values/Register", {
+            fetch("http://44f5-103-240-204-253.in.ngrok.io/api/values/Register", {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json',
@@ -208,7 +198,7 @@ useEffect(()=>{
         // if (otpNumber == localStorage.getItem('OTP')) {
         //     toast.error("Invalide OTP Number")
         // } else {
-        const url = `http://192.168.1.9/itp/api/values/Otp?otp=${otpNumber}` 
+        const url = `http://44f5-103-240-204-253.in.ngrok.io/api/values/Otp?otp=${otpNumber}` 
 
         fetch(url)
         .then((response) => response.json())
@@ -216,12 +206,12 @@ useEffect(()=>{
     
         setData(json["results"])
             console.log(json);
-            // if (json === "Successfully register") {
-            //     setBasicModal(false);
-            // }
-            if(otpNumber === 0){
-                toast.error("not valid")
+            if (json.message === "valid otp") {
+                setBasicModal(false);
             }
+            // if(otpNumber === 0){
+            //     toast.error("not valid")
+            // }
             })
             .catch((error) => console.log(error));
              
@@ -274,11 +264,12 @@ useEffect(()=>{
                             <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={loginpassword} onChange={(e) => setLoginPassword(e.target.value)} /><br /><br /><br />
                             <ToastContainer />
                             <Button type='submit' className='modal-login-button' onClick={loginData}>Login</Button><br />
-                            <button color='primary' className="signup-login-button" onClick={() => {
-                                setBasicModal(!basicModal)
-                                setSignUpModal(!signupModal)
-
-                            }}>Already me?Signup</button>
+                            <button color='primary' className="signup-login-button" onClick={handleShow2
+                                // () => {
+                                // setBasicModal(!basicModal)
+                                // setSignUpModal(true)
+                                // }
+                            }>Already me?Signup</button>
                         </form>
                         </ModalBody>
                     </Modal>

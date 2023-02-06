@@ -5,6 +5,7 @@ import ModalBasic from './Component/Home';
 import Otheruserprofile from './Component/Otheruserprofile';
 import Chat from './Component/Chat';
 import Mpapplication from './Component/Map';
+
 function App() {
 
   return (
