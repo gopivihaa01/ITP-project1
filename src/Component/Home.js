@@ -16,6 +16,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import itp from '../assets/ITP.svg';
 import user from '../assets/puser.jpg';
+import { API_URL } from '../confing';
 
 
 const ModalBasic = () => {
@@ -37,13 +38,7 @@ const ModalBasic = () => {
     const [menuItemActive, setMenuItemActive] = useState(false)
     // const [loginButtonhide,setLoginButtonHide] = useState(true)
     const isLogin = window.localStorage.getItem('UserToken')
-      const handleShow = () => {
-        setBasicModal(true);
-      };
-      const handleShow2 = () => {
-        setSignUpModal(true);
-        setSignUpModal(false);
-      };
+
 
 console.log(otpNumber);
     useEffect(() => {
@@ -84,7 +79,7 @@ console.log(otpNumber);
         }
     }
     function loginData() {
-        fetch("http://44f5-103-240-204-253.in.ngrok.io/api/values/Login", {
+        fetch(`${API_URL}/api/values/Login`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -104,9 +99,10 @@ console.log(otpNumber);
                     });
                 }
                 else if (result.Statuscode === 200) {
-                    console.log((result.UserData));
+                    console.log(result.UserData);
                     localStorage.setItem('UserToken', result.token)
-                    localStorage.setItem('UserID', result.UserData.User_Id)
+                    localStorage.setItem('UserID', result.UserData.Id)
+                    console.log(result.UserData)
                     toast.success("Login Successfully", {
                         position: "bottom-right"
                     });
@@ -263,13 +259,13 @@ useEffect(()=>{
                             <ToastContainer />
                             <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={loginpassword} onChange={(e) => setLoginPassword(e.target.value)} /><br /><br /><br />
                             <ToastContainer />
-                            <Button type='submit' className='modal-login-button' onClick={loginData}>Login</Button><br />
-                            <button color='primary' className="signup-login-button" onClick={handleShow2
-                                // () => {
-                                // setBasicModal(!basicModal)
-                                // setSignUpModal(true)
-                                // }
-                            }>Already me?Signup</button>
+                            <Button type='submit' className='modal-login-button' onClick={loginData} >Login</Button><br />
+                            <button color='primary' className="signup-login-button" onClick={
+                                () => {
+                                setBasicModal(!basicModal)
+                                setSignUpModal(true)
+                                }}
+                            >Already me?Signup</button>
                         </form>
                         </ModalBody>
                     </Modal>
@@ -285,7 +281,7 @@ useEffect(()=>{
                                 <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /><br /><br />
                                 <ToastContainer />
                                 <Button type='submit' className='modal-login-button' onClick={saveData}>Signup</Button><br />
-                                <button color='primary' className="signup-login-button" onClick={() => { toggle('1') }}>Are you never member?Login</button>
+                                <button color='primary' className="signup-login-button" onClick={() => { toggle('') }}>Are you never member?Login</button>
                             </> : <></>}
                             {otp1 && <div>
                                 <h3 className="otp-header">Verification</h3>
