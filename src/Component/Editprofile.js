@@ -22,8 +22,8 @@ const Editprofile = () => {
     const UserToken = window.localStorage.getItem('UserToken');
     const userId = window.localStorage.getItem('UserID');
     const userDetails = JSON.parse(window.sessionStorage.getItem("users"))
-    const userGetLocation = userDetails[0].location
-    const userGetCurrency = userDetails[0].currency
+    // const userGetLocation = userDetails[0].location
+    // const userGetCurrency = userDetails[0].currency
     const [userData, setUserData] = useState({
         Id: "",
         FullName: "",
@@ -34,8 +34,8 @@ const Editprofile = () => {
         Floor: "",
         House_no: "",
         Society_Name: "",
-        Country_id: userGetLocation.Country_id,
-        State_id: userGetLocation.State_id,
+        // Country_id: userGetLocation.Country_id,
+        // State_id: userGetLocation.State_id,
         // Latitude : "",
         // Longitude : "",
         City_id: "",
@@ -99,7 +99,7 @@ const Editprofile = () => {
         e.preventDefault();
         let formData = new FormData();
         formData.append("file", file);
-        const url = `http://192.168.1.9/itp/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
+        const url = `https://44f5-103-240-204-253.in.ngrok.io/api/values/UserProfilePicture?token=${UserToken}&id=${userId}`
         console.log(url);
         fetch(url, {
             method: 'POST',
@@ -111,7 +111,7 @@ const Editprofile = () => {
         }).then((result) => {
             console.log(result)
         })
-        const putUrl = `http://192.168.1.9/itp/api/values/AddEditUserDetails?token=${UserToken}`
+        const putUrl = `https://44f5-103-240-204-253.in.ngrok.io/api/values/AddEditUserDetails?token=${UserToken}`
         fetch(putUrl, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -129,7 +129,7 @@ const Editprofile = () => {
     }
 
     const showData = () => {
-        fetch(`http://192.168.1.9/itp/api/values/UserDetails?User_id=${userId}&token=${UserToken}`, {
+        fetch(`https://44f5-103-240-204-253.in.ngrok.io/api/values/UserDetails?User_id=${userId}&token=${UserToken}`, {
             method: "GET",
         }).then((resp) => {
             // getSkillData()
@@ -243,7 +243,7 @@ const Editprofile = () => {
     }, [locationData]);
 
     const getSkillData = () => {
-        fetch(`http://192.168.1.9/itp/api/values/BindSkill`).then(
+        fetch(`https://44f5-103-240-204-253.in.ngrok.io/api/values/BindSkill`).then(
             (response) => {
                 const option = new Array
                 response.json().then(
@@ -260,14 +260,15 @@ const Editprofile = () => {
         )
     }
     const getcountries = () => {
-        fetch(`http://192.168.1.9/itp/api/values/BindCountry`)
+        fetch(`https://44f5-103-240-204-253.in.ngrok.io/api/values/BindCountry`)
             .then((response) => response.json())
             .then((data) => {
                 setCountries(data)
             });
     }
     const getstateData = useCallback(() => {
-        fetch(`http://192.168.1.9/itp/api/values/BindState?Country_id=${locationData.Country_id}`)
+        fetch(`https://44f5-103-240-204-253.in.ngrok.io/api/values/BindState?Country_id=${locationData.Country_id}`)
+
             .then((response) => response.json())
             .then(data => {
                 setState(data);
@@ -275,7 +276,8 @@ const Editprofile = () => {
     },[locationData.Country_id])
 
     const getcityData = useCallback(() => {
-        fetch(`http://192.168.1.9/itp/api/values/BindCity?State_id=${locationData.State_id}`)
+        fetch(`https://44f5-103-240-204-253.in.ngrok.io/api/values/BindCity?State_id=${locationData.State_id}`)   
+
             .then((response) => response.json())
             .then(data => {
                 setCity(data);
@@ -283,7 +285,7 @@ const Editprofile = () => {
     },locationData.State_id)
     
     const getcurrency = () => {
-        fetch(`http://192.168.1.9/itp/api/values/BindCurrency`)
+        fetch(`https://44f5-103-240-204-253.in.ngrok.io/api/values/BindCurrency`)
             .then((response) => response.json())
             .then(data => {
                 setCurrency(data);
@@ -406,8 +408,7 @@ const Editprofile = () => {
 
                         <FormControl fullWidth className='mainskill-input-edit'>
                             <InputGroup size='large' >
-                                <TextField id="outlined-basic" className='mainskill-inputheight-edit societyname-edit'
-                                    value={locationData.Society_Name || ""} name='Society_Name' onChange={onChangeLocationData} type="textarea" />
+                                <TextField id="outlined-basic" className='mainskill-inputheight-edit societyname-edit'value={locationData.Society_Name || ""} name='Society_Name' onChange={onChangeLocationData}  label="Society Name" type="textarea" />
                                 <TextField id="outlined-basic" className='mainskill-inputheight-edit postalcode-edit'
                                     onChange={onChangeLocationData} value={locationData.PostalCode} label="PostalCode" name="PostalCode" type="number" />
                             </InputGroup>
