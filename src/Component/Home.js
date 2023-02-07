@@ -79,7 +79,7 @@ const ModalBasic = () => {
         }
     }
     function loginData() {
-        fetch(`${API_URL}/api/values/Login`, {
+        fetch(`http://192.168.1.20/itp/api/values/Login`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -146,7 +146,7 @@ useEffect(()=>{
                 position: "bottom-right"
             });
         } else {
-            fetch(`${API_URL}/api/values/Register`, {
+            fetch(`http://192.168.1.20/itp/api/values/Register`, {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json',
@@ -195,7 +195,7 @@ useEffect(()=>{
         // if (otpNumber == localStorage.getItem('OTP')) {
         //     toast.error("Invalide OTP Number")
         // } else {
-        const url = `http://44f5-103-240-204-253.in.ngrok.io/api/values/Otp?otp=${otpNumber}` 
+        const url = `http://192.168.1.20/itp/api/values/Otp?otp=${otpNumber}` 
 
         fetch(url)
         .then((response) => response.json())
@@ -265,7 +265,7 @@ useEffect(()=>{
                         </form>
                         </ModalBody>
                     </Modal>
-                    {/* <Modal isOpen={signupModal} toggle={() => setSignUpModal(!signupModal)}>
+                    <Modal isOpen={signupModal} toggle={() => setSignUpModal(!signupModal)}>
                         <h5 className="hfive-header-modal">Sign Up To My Account <img className='img-header-modal' src='image/dot.png' alt="dotimage" /></h5>
                         <ModalBody>
                             {otp1 !== true ? <p className='login-header'>Signup</p> : <></>}
@@ -294,7 +294,7 @@ useEffect(()=>{
                             <button className="otp-verify-btn" onClick={otpData} type="subit">Submit</button>
                             </div>}
                         </ModalBody>
-                    </Modal> */}
+                    </Modal>
                             {/* <Nav tabs>
                                 <NavItem>
                                     <NavLink style={{ cursor: "pointer" }}

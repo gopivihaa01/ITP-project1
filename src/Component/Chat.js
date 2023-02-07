@@ -7,7 +7,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { GoSearch } from 'react-icons/go';
 import avtar from "../assets/puser.jpg";
 import { useEffect, useState } from "react";
-import { API_URL } from '../confing';
+
 
 
 const Chat = () => {
@@ -26,7 +26,7 @@ const Chat = () => {
     const loginUserId = localStorage.getItem('UserID');
     const userToken = localStorage.getItem('UserToken');
     const getuserchatData = () => {
-        fetch(`${API_URL}/api/chat/userChatList?id=${loginUserId}&token=${userToken}`)
+        fetch(`http://192.168.1.20/itp/api/chat/userChatList?id=${loginUserId}&token=${userToken}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
@@ -34,7 +34,7 @@ const Chat = () => {
             })
     }
     const savechatuser = () =>{
-        fetch(`http://192.168.1.9/itp/api/chat/SaveChat?token=${userToken}`,{
+        fetch(`http://192.168.1.20/itp/api/chat/SaveChat?token=${userToken}`,{
             method:"POST",
             headers: {
                 'Accept': 'application/json',
@@ -54,7 +54,7 @@ const Chat = () => {
         })
     }
     const getusermessage = () =>{
-        fetch(`http://192.168.1.9/itp/api/chat/userMessagesbyuserid?chatId=2008&token=${userToken}`)
+        fetch(`http://192.168.1.20/itp/api/chat/userMessagesbyuserid?chatId=2008&token=${userToken}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data.Messages)
@@ -87,7 +87,7 @@ const Chat = () => {
                                 setOnclickFromUserName(user.fromusername)
                                 console.log(user.fromusername);
                                 }}>
-                                <div><Avatar className='header-avtar-chat' src="http://192.168.1.9/itp/Files/Images/avatar.png" /></div>
+                                <div><Avatar className='header-avtar-chat' src="http://192.168.1.20/itp/Files/Images/avatar.png" /></div>
                                 <div>
                                     <h6 className="title-contentmsg-chat">{user.Tousername}</h6>
                                     {/* <p className="content-msg-chat">hello .!</p> */}

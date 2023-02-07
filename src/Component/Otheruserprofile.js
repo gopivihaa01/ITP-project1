@@ -57,7 +57,7 @@ const Otheruserprofile = () => {
     const location = (window.location.pathname).split("/")
     // console.log(location[2]);
     const getallUserData = () => {
-        fetch(`${API_URL}/api/values/freeUserDetails?User_id=${location[2]}`)
+        fetch(`http://192.168.1.20/itp/api/values/freeUserDetails?User_id=${location[2]}`)
         .then((response) => response.json())
         .then(data => {
             console.log(data)
@@ -72,7 +72,7 @@ const Otheruserprofile = () => {
         });
     }
     const chatroomdata = () => {
-        fetch(`${API_URL}/api/chat/createChat?token=${userToken}`, {
+        fetch(`http://192.168.1.20/itp/api/chat/createChat?token=${userToken}`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
