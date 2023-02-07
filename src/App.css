@@ -556,6 +556,9 @@
     display: flex;
     background-color: #e3e3e3;
 }
+.button-send-chat{
+    background-color:#023B54  !important;
+}
 .imageicon-footer-chat{
     font-size: 20px;
     margin: 15px 5px;
@@ -570,7 +573,7 @@
     width: 100% !important;
 }
 .sendicon-footer-chat{
-    margin:15px 20px;
+    margin:9px 20px;
     font-size: 20px;
 }
 .infowindow-main{

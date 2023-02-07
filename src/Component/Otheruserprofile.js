@@ -87,10 +87,6 @@ const Otheruserprofile = () => {
             resp.json().then((resp) => {
                 console.log("resp", resp)
             })
-            // setFromUser(resp.Tousername)
-            // if(userDetail.Id === loginUserId){
-            //     console.log(resp.Tousername)
-            // }
         })
         
         

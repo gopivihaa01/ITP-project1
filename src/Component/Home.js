@@ -39,7 +39,7 @@ const ModalBasic = () => {
     // const [loginButtonhide,setLoginButtonHide] = useState(true)
     const isLogin = window.localStorage.getItem('UserToken')
 
-
+    // const signuphandleShow = () => setSignUpModal(true);
     console.log(otpNumber);
     useEffect(() => {
 
@@ -230,7 +230,7 @@ useEffect(()=>{
                     {/* <a href='/'><BsFilter className='filter-icon' /></a> */}
                 <div className='maindiv-header'>
                     <button className='login-button-header' onClick={() => setLoginModal(!loginModal)}>Login</button>
-                    <button className='login-button-header' onClick={() => setSignUpModal(!signupModal)}>Sign up</button>
+                    {/* <button className='login-button-header' onClick={() => setSignUpModal(!signupModal)}>Sign up</button> */}
 
                     {menuItemActive &&
                     <Menu>
@@ -261,11 +261,38 @@ useEffect(()=>{
                             <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={loginpassword} onChange={(e) => setLoginPassword(e.target.value)} /><br /><br /><br />
                             <ToastContainer />
                             <Button type='submit' className='modal-login-button' onClick={loginData} >Login</Button><br />
-                            <button color='primary' className="signup-login-button">Already me?Signup</button>
+                            <button color='primary' className="signup-login-button" onClick={() => setSignUpModal(true)}>Already me?Signup</button>
                         </form>
+                           {signupModal && <div>
+                                {otp1 !== true ? <p className='login-header'>Signup</p> : <></>}
+                                {otp1 !== true ? <>
+                                    <TextField className='phone-input' id="outlined-basic" label="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} /><br /><br /><br />
+                                    <ToastContainer />
+                                    <TextField className='phone-input' id="outlined-basic" label="Phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} /><br /><br /><br />
+                                    <ToastContainer />
+                                    <TextField className='phone-input' id="outlined-basic" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /><br /><br />
+                                    <ToastContainer />
+                                    <Button type='submit' className='modal-login-button' onClick={saveData}>Signup</Button><br />
+                                    <button color='primary' className="signup-login-button" onClick={() => { toggle('') }}>Are you never member?Login</button>
+                                </> : <></>}
+                                {otp1 && <div>
+                                    <h3 className="otp-header">Verification</h3>
+                                    <p className="otp-enterp">Enter your OTP number</p>
+                                    <OTPInput className="otp-data"
+                                        value={otpNumber}
+                                        onChange={setOtpNumber}
+                                        autoFocus
+                                        OTPLength={4}
+                                        otpType="number"
+                                        disabled={false}
+                                        secure
+                                    />
+                                    <button className="otp-verify-btn" onClick={otpData} type="submit">Submit</button>
+                                </div>}
+                            </div>} 
                         </ModalBody>
                     </Modal>
-                    <Modal isOpen={signupModal} toggle={() => setSignUpModal(!signupModal)}>
+                    {/* <Modal isOpen={signupModal} toggle={() => setSignUpModal(!signupModal)}>
                         <h5 className="hfive-header-modal">Sign Up To My Account <img className='img-header-modal' src='image/dot.png' alt="dotimage" /></h5>
                         <ModalBody>
                             {otp1 !== true ? <p className='login-header'>Signup</p> : <></>}
@@ -291,10 +318,10 @@ useEffect(()=>{
                                     disabled={false}
                                     secure
                                 />
-                            <button className="otp-verify-btn" onClick={otpData} type="subit">Submit</button>
+                                <button className="otp-verify-btn" onClick={otpData} type="subit">Submit</button>
                             </div>}
                         </ModalBody>
-                    </Modal>
+                    </Modal> */}
                             {/* <Nav tabs>
                                 <NavItem>
                                     <NavLink style={{ cursor: "pointer" }}
