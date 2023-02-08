@@ -5,7 +5,6 @@ import { Col, Label, Row } from "reactstrap";
 import avtar from "../assets/puser.jpg";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from '../confing';
 
 const Otheruserprofile = () => {
     const [userDetail, setUserDetail] = useState({});
@@ -44,8 +43,8 @@ const Otheruserprofile = () => {
         const dLat = (lat - userLat) * Math.PI / 180;
         const dLon = (long - userLon) * Math.PI / 180;
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(userLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        Math.cos(userLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         const d = R * c;
         if (d > 1) {
@@ -88,13 +87,11 @@ const Otheruserprofile = () => {
                 console.log("resp", resp)
             })
         })
-        
-        
-
     }
     useEffect(() => {
         getallUserData()
     }, []);
+
     return (
         <div>
             <div className='other-userprofile'></div>
@@ -135,7 +132,6 @@ const Otheruserprofile = () => {
                             <HiOutlineArrowRight className="right-arrow-otheruser" />
                         </button>
                     </div>
-
                 </Col>
             </Row>
         </div>

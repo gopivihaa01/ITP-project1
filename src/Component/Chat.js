@@ -9,8 +9,6 @@ import avtar from "../assets/puser.jpg";
 import { useEffect, useState } from "react";
 import moment from "moment/moment";
 
-
-
 const Chat = () => {
     const navigate = useNavigate();
     const [useronedetail, setUseOneDetail] = useState([]);
@@ -23,21 +21,20 @@ const Chat = () => {
     const [onClickUserName, setOnClickUserName] = useState("");
     const [onClickFromUserName, setOnclickFromUserName]= useState("");
     const [chatuserdata , setChatUserData] = useState([]);
+    const loginUserId = localStorage.getItem('UserID');
+    const userToken = localStorage.getItem('UserToken');
+
     const navigateToMap = () => {
         navigate('/');
     };
-    // console.log(onClickFromUserName)
-    // console.log(ToUserId)
-    
-    const loginUserId = localStorage.getItem('UserID');
-    const userToken = localStorage.getItem('UserToken');
+
     const getuserchatData = () => {
         fetch(`http://192.168.1.20/itp/api/chat/userChatList?id=${loginUserId}&token=${userToken}`)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data)
-                setUseOneDetail(data);
-            })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+            setUseOneDetail(data);
+        })
     }
     const savechatuser = () =>{
         fetch(`http://192.168.1.20/itp/api/chat/SaveChat?token=${userToken}`,{
@@ -58,20 +55,16 @@ const Chat = () => {
                 console.log("result", result.Reciever_ID)
                 setRecieverId(result.Reciever_ID)
                 setChatInput("")
-                // console.log(resp.Reciever_ID)
             })
-
         })
-        
-
     }
     const getusermessage = () =>{
         fetch(`http://192.168.1.20/itp/api/chat/userMessagesbyuserid?chatId=${onClickUserId}&token=${userToken}`)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data.Messages)
-                setChatUserData(data.Messages);
-            })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data.Messages)
+            setChatUserData(data.Messages);
+        })
     }
     useEffect(() => {
         getuserchatData()
@@ -109,7 +102,6 @@ const Chat = () => {
                                 </div>
                             </button>
                         ))}
-
                     </Col>
                    {userchat && <Col className="seccol-chat">
                        <div className="seccol-chatcontent-chat">
@@ -136,28 +128,18 @@ const Chat = () => {
                                 <p className="time-fstchat-tofst">{moment(chat.Send_Time).format('l')}</p> <br /><br /><br />
                             </div>
                             }
-
-                           
-
-                           
                         </div>))}
-                
                         <div className="main-footer-chat">
                             <FiImage className="imageicon-footer-chat" />
                             <Input className="typeingbar-chat" type="" placeholder="send a message..." value={chatinput}  onChange={(e) => setChatInput(e.target.value)}></Input>
                             <Button className="button-send-chat" disabled={!chatinput}>
-                            <FiSend className="sendicon-footer-chat"  onClick={() => {
-                                savechatuser();
-                            
-                            }} />
+                                <FiSend className="sendicon-footer-chat"  onClick={() => {
+                                    savechatuser();
+                                }} />
                             </Button>
                         </div>
-
-        
                     </Col>} 
-
                 </Row>
-
             </Card>
         </>
     )

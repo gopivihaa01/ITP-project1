@@ -8,7 +8,6 @@
 .main-header{
     height: 6rem;
     width: 100%;
-    /* display: flex; */
     background-color:white;
     box-shadow: 0 3px 20px rgba(0,0,0,0.2);
 }
@@ -31,6 +30,7 @@
 .maindiv-header{
     float: right;
     margin: 20px;
+    display: flex;
 }
 .login-button-header{
     height: 36px;
@@ -41,20 +41,15 @@
     color: white;
     border-style: none;
 }
+.user-name-header{
+    margin-top: 8px;
+    margin-right: 10px;
+    color: rgb(69, 69, 156);
+}
 .menu-button-header{
     background-color: white;
     border: none;
 }
-/* .login-button{
-    float: right;
-    height: 36px;
-    width: 145px;
-    border-style: rgb(60 60 171);
-    background-color: rgb(60 60 171);
-    color: white;
-    margin: 20px 98px;
-    border-style: none;
-} */
 /* .main-menubutton{
     float: right !important;
     background-color: white;
@@ -92,17 +87,16 @@
     margin-top: -47px;
     margin-left: -13px;
 }
-.edit-camera-circle{
-   
-        position: relative;
-        top: -25px;
-        left: 30px;
-        background: #ffffff;
-        border-radius: 50%;
-        margin: 0 auto 10px auto;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
+.edit-camera-circle {
+    position: relative;
+    top: -25px;
+    left: 30px;
+    background: #ffffff;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
 .edit-camera{
     color: cadetblue;
@@ -224,7 +218,7 @@
 .login-header{
     color:#023B54;
     font-size: 20px;
-    margin-top: 20px;
+    margin-top: -6px;
     font-weight: 600;
 }
 .phone-input{
@@ -261,9 +255,9 @@
 }
 
 .otp-header{
-    margin-top: 40px;
+    margin-top: -6px;
     text-align: center;
-    color: rgb(60 60 171);
+    color: #023B54;
 }
 .otp-enterp{
     text-align: center;
@@ -288,7 +282,7 @@
     color: white;
     margin-right: 35%;
     margin-top: 30px;
-    background-color: rgb(60 60 171) ;
+    background-color:#023B54 ;
 }
 .otp-second-content button{
     border:none;
