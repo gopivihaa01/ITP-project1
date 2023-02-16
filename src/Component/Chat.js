@@ -8,6 +8,7 @@ import { GoSearch } from 'react-icons/go';
 import avtar from "../assets/puser.jpg";
 import { useEffect, useState } from "react";
 import moment from "moment/moment";
+import { API_URL } from "../confing";
 
 const Chat = () => {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Chat = () => {
     };
 
     const getuserchatData = () => {
-        fetch(`http://192.168.1.20/itp/api/chat/userChatList?id=${loginUserId}&token=${userToken}`)
+        fetch(`${API_URL}/itp/api/chat/userChatList?id=${loginUserId}&token=${userToken}`)
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
@@ -37,7 +38,7 @@ const Chat = () => {
         })
     }
     const savechatuser = () =>{
-        fetch(`http://192.168.1.20/itp/api/chat/SaveChat?token=${userToken}`,{
+        fetch(`${API_URL}/itp/api/chat/SaveChat?token=${userToken}`,{
             method:"POST",
             headers: {
                 'Accept': 'application/json',
@@ -59,7 +60,7 @@ const Chat = () => {
         })
     }
     const getusermessage = () =>{
-        fetch(`http://192.168.1.20/itp/api/chat/userMessagesbyuserid?chatId=${onClickUserId}&token=${userToken}`)
+        fetch(`${API_URL}/itp/api/chat/userMessagesbyuserid?chatId=${onClickUserId}&token=${userToken}`)
         .then((response) => response.json())
         .then((data) => {
             console.log(data.Messages)
@@ -89,6 +90,7 @@ const Chat = () => {
                                 console.log("user", user);
                                 setUserChat(true);
                                 setOnClickUserId(user.Chat_Id)
+                                console.log(user.Chat_Id)
                                 setFromUserId(user.From_User)
                                 setToUserId(user.To_User)
                                 setOnClickUserName(user.Tousername)

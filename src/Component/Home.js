@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import itp from '../assets/ITP.svg';
 import user from '../assets/puser.jpg';
 import { Data } from '@react-google-maps/api';
+import { API_URL } from '../confing';
 
 const ModalBasic = () => {
     const [loginModal, setLoginModal] = useState(false)
@@ -48,7 +49,7 @@ const ModalBasic = () => {
 
     const navigateToEdit = () => {
         const ID = window.localStorage.getItem('UserID')
-        navigate(`/edit?id=${ID}`);
+        navigate(`/edit/id=${ID}`);
     };
     const navigateToChat = () => {
         navigate('/chatpage');
@@ -59,7 +60,7 @@ const ModalBasic = () => {
     //     }
     // }
     function loginData() {
-        fetch(`http://192.168.1.20/itp/api/values/Login`, {
+        fetch(`${API_URL}/itp/api/values/Login`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -96,7 +97,7 @@ const ModalBasic = () => {
 
         const userToken = window.localStorage.getItem('UserToken');
         console.log(userId)
-        fetch(`http://192.168.1.9/itp/api/values/UserDetails?User_id=${userId}&token=${userToken}`, {
+        fetch(`${API_URL}/itp/api/values/UserDetails?User_id=${userId}&token=${userToken}`, {
             method: "GET",
         }).then((response) => {
             response.json().then((result) => {
@@ -124,7 +125,7 @@ const ModalBasic = () => {
                 position: "bottom-right"
             });
         } else {
-            fetch(`http://192.168.1.20/itp/api/values/Register`, {
+            fetch(`${API_URL}/itp/api/values/Register`, {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json',
@@ -168,7 +169,7 @@ const ModalBasic = () => {
     }
     const otpData = () => {
         setShowData(true)
-        const url = `http://192.168.1.20/itp/api/values/Otp?otp=${otpNumber}` 
+        const url = `${API_URL}/itp/api/values/Otp?otp=${otpNumber}` 
         fetch(url)
         .then((response) => response.json())
         .then((data) => {

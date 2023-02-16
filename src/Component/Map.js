@@ -1,6 +1,8 @@
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import {useEffect, useState} from 'react';
 import {useNavigate } from 'react-router-dom';
+import { API_URL } from '../confing';
+
 
 const Mpapplication = (props) => {
 
@@ -16,7 +18,7 @@ const Mpapplication = (props) => {
   const apiKey = "AIzaSyC1t9XVQUGSxr9Vdn2catWhv4gQJ5AwjL4";
 
   const getmaplData = () => {
-    fetch("http://192.168.1.20/itp/api/values/Location")
+    fetch(`${API_URL}/itp/api/values/Location`)
     .then((resp) => {
       resp.json().then((result) => {
         console.log("result", result.Userlist)
@@ -45,7 +47,7 @@ const Mpapplication = (props) => {
             position={{ lat: parseFloat(selectInfowindow.Locationdata.Latitude), lng: parseFloat(selectInfowindow.Locationdata.Longitude) }}
           >
             <div className='infowindow-main'>
-              <img className='infowindow-img' src="http://192.168.1.20/itp/Files/Images/avatar.png" />
+              <img className='infowindow-img' src="http://192.168.1.17/itp/Files/Images/avatar.png" />
               <a className='infowindow-content' href={`http://localhost:3000/otheruserprofile/${selectInfowindow.UserData.Id}`}><h6>{selectInfowindow.UserData.FullName}</h6></a>
             </div>
           </InfoWindow>)}
